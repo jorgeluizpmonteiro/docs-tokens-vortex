@@ -1,0 +1,501 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "operation": "createFromText",
+        "content": "={{ $json.ficha }}",
+        "name": "={{ $json.nome_arquivo }}",
+        "driveId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "My Drive"
+        },
+        "folderId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "root",
+          "cachedResultName": "/ (Root folder)"
+        },
+        "options": {
+          "convertToGoogleDocument": true
+        }
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        384,
+        -80
+      ],
+      "id": "1c7a7efe-8659-4ee2-8853-a89d3e6b24e8",
+      "name": "Salvar no Drive",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "SUA_CREDENCIAL",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pega a linha que o Montar ficha preparou e entrega para o Data table.\nconst ficha = $('Montar ficha').first().json;\nif (!ficha.linha || typeof ficha.linha !== 'object') {\n  throw new Error('O Montar ficha não devolveu a linha. Cole de novo o código do passo 9 nele e rode o Test step dele antes deste.');\n}\nreturn [{ json: ficha.linha }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        624,
+        -80
+      ],
+      "id": "34b04a60-6eb6-40de-adfc-4779711e4c2c",
+      "name": "Medir"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "ID_DA_TABELA",
+          "cachedResultName": "registro_personalizacao"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "projeto",
+              "displayName": "projeto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "aprovado",
+              "displayName": "aprovado",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "ficha",
+              "displayName": "ficha",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "correcoes",
+              "displayName": "correcoes",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "minutos_automacao",
+              "displayName": "minutos_automacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "trocas_base",
+              "displayName": "trocas_base",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "trocas_semantica",
+              "displayName": "trocas_semantica",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "trocas_reprovadas",
+              "displayName": "trocas_reprovadas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "alertas",
+              "displayName": "alertas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "grupos_apagados",
+              "displayName": "grupos_apagados",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "minutos_agente",
+              "displayName": "minutos_agente",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "minutos_revisao",
+              "displayName": "minutos_revisao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "pedido_id",
+              "displayName": "pedido_id",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "plano",
+              "displayName": "plano",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        848,
+        -80
+      ],
+      "id": "c99d29c8-5032-4e74-90d3-37a89fabda18",
+      "name": "Data table"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "tokens-personalizar",
+        "options": {
+          "rawBody": true
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.2,
+      "position": [
+        -1584,
+        -80
+      ],
+      "id": "f5678d62-4310-41b4-8ade-9805aed6bbd2",
+      "name": "Receber do plugin",
+      "webhookId": "82338a6f-de41-4eab-a4a3-a8ccebb987ca"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Recebe o pacote que o plugin do Figma enviou (variáveis + respostas ou pedido) e deixa no formato que os próximos nós usam.\nconst entrada = $input.first();\nlet corpo = entrada.json.body;\nif (typeof corpo === 'string') corpo = corpo.trim() ? JSON.parse(corpo) : null;\nif ((!corpo || !corpo.base) && entrada.binary) {\n  const chave = Object.keys(entrada.binary)[0];\n  if (chave) corpo = JSON.parse((await this.helpers.getBinaryDataBuffer(0, chave)).toString('utf8'));\n}\nif (!corpo || !corpo.base) {\n  throw new Error('O pacote do plugin não chegou. No nó Webhook, confira se a opção Raw Body está ligada.');\n}\nif (!Object.keys(corpo.semantic?.light || {}).length) {\n  throw new Error('Não achei a coleção semantic com o modo light. Coleções do arquivo: ' + (corpo.colecoes || []).join(', '));\n}\n\nreturn [{ json: {\n  inicio: new Date().toISOString(),\n  acao: corpo.acao,\n  pedidoId: corpo.pedidoId || '',\n  arquivo: corpo.arquivo,\n  respostas: corpo.respostas || {},\n  pedido: corpo.pedido || {},\n  base: corpo.base,\n  semantic: corpo.semantic,\n  specific: corpo.specific || { light: {}, dark: {} },\n  contagem: {\n    base: Object.keys(corpo.base).length,\n    semantic: Object.keys(corpo.semantic.light).length,\n    specific: Object.keys(corpo.specific?.light || {}).length,\n  },\n} }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -1360,
+        -80
+      ],
+      "id": "425de054-3f09-4fb3-beb2-a4548273d97f",
+      "name": "Ler tokens"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Lê o texto da documentação (arquivo .md no Google Drive) e limpa o que não é texto, para a IA seguir as diretrizes.\n// A API do Figma não entrega o texto dos blocos de spec, por isso a fonte é o .md exportado da documentação.\nconst item = $input.first();\nconst chave = Object.keys(item.binary || {})[0];\nif (!chave) throw new Error('O nó Ler documentação não trouxe arquivo. Confira se a Operation é Download e se o arquivo é o .md da documentação.');\nconst bruto = (await this.helpers.getBinaryDataBuffer(0, chave)).toString('utf8');\nconst documentacao = bruto\n  .replace(/^\\[image\\d+\\]:.*$/gm, '')        // imagens embutidas em base64\n  .replace(/!\\[[^\\]]*\\]\\[[^\\]]*\\]/g, '')      // marcadores das imagens\n  .replace(/\\\\([-#.()_*\\[\\]])/g, '$1')        // barras de escape do export do Docs\n  .replace(/\\*\\*/g, '')\n  .replace(/\\n{3,}/g, '\\n\\n')\n  .trim()\n  .slice(0, 150000);\nif (documentacao.length < 1000) throw new Error(`Só vieram ${documentacao.length} caracteres. Confira se o arquivo baixado é o .md da documentação.`);\nreturn [{ json: { documentacao, caracteres: documentacao.length } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -912,
+        -80
+      ],
+      "id": "55d31219-8a1b-4cae-8d6d-69af2597a703",
+      "name": "Resumir documentação"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "mode": "url",
+          "value": "https://drive.google.com/file/d/ID_DO_ARQUIVO_MD/view"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -1136,
+        -80
+      ],
+      "id": "2a92b681-9124-43bf-a8d4-90807f452038",
+      "name": "Ler documentação",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "SUA_CREDENCIAL",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Você faz a etapa 2 (Proposta) da configuração dos Design Tokens de um projeto do laboratório. Recebe as respostas do questionário, o que o código já calculou, a lista das variáveis lidas do arquivo no Figma (a Semântica com a referência atual nos dois modos e a Base com os valores) e a documentação do laboratório, lida do Figma. Você só propõe: um humano aprova, e depois um agente aplica no Figma.\n\n## Regras\n0. A documentação do laboratório (no fim) é a fonte das regras e dos limites. Se algo deste prompt for diferente dela, siga a documentação e escreva em \"duvidas\" o que diferiu.\n1. Proponha só as trocas de referência da Semântica que as respostas pedem. Resposta \"padrão\" não gera troca.\n2. Use só nomes que estão nas listas. Nunca crie token, nunca mude nome, nunca invente valor.\n3. Toda referência nova aponta para uma variável da Base da lista, nos dois modos (claro e escuro).\n4. As trocas de valor da Base (cores da marca, neutro e famílias de fonte) e os grupos apagados já foram feitos pelo código. Não repita.\n5. Travado não muda: as escalas da Base e as paletas de feedback.\n6. Limites do Ajustável:\n   - em space e radius, um tamanho nunca fica maior que o seguinte (small pode ser igual a medium, nunca maior);\n   - border-width de 0,5 a 8 px, e border-width/focus nunca abaixo de 2;\n   - altura de linha: 1,3 × o tamanho em display e heading, e 1,5 × em body e label, arredondada para o múltiplo de 4 mais próximo (no empate, para cima). Se mudar um font-size, mude a line-height do mesmo papel e tamanho;\n   - text/danger e afins só dentro da própria paleta;\n   - accent-n só aponta para brand-n;\n   - cantos retos: todo radius, menos radius/full, pode apontar para radius/0;\n   - typography/{papel}/font-family aponta só para font-family/primary ou /secondary;\n   - deslocamento, desfoque e espalhamento de shadow apontam só para space.\n7. Onde cada resposta mexe: 6 (fonte do texto) nos font-weight de body e label, se a fonte não tiver 400 e 500; 7 (peso dos títulos) nos font-weight de typography/display e typography/heading; 8 (densidade) em space; 9 (cantos) em radius; 10 (bordas) em border-width/default e border-width/strong; 11 (tamanho dos títulos de destaque) nos font-size e line-height de typography/display; 12 (página e superfícies) em background/canvas e background/surface; o contraste da cor principal em text/on-action-primary e icon/on-action-primary, usando a pré-checagem.\n8. Se uma resposta não couber no limite, não force: escreva em \"duvidas\".\n\n## Dados\n{{ $json.contexto_ia }}\n\n## Documentação do laboratório (lida do Figma)\n{{ $('Resumir documentação').first().json.documentacao }}\n\n## Formato\nResponda só com JSON válido, sem nenhum texto antes ou depois:\n{\"trocas\":[{\"token\":\"space/medium\",\"claro\":\"space/12\",\"escuro\":\"space/12\",\"resposta\":\"8. Densidade\",\"motivo\":\"uma frase\"}],\"duvidas\":[\"pergunta curta\"]}",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        -464,
+        -80
+      ],
+      "id": "19b3b98d-8d99-4d30-8f38-f1e33b8e6737",
+      "name": "Proposta"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Transforma as respostas do questionário no que dá para decidir em código: trocas de valor da Base, grupos a apagar, alertas e uma pré-checagem de contraste.\nconst t = $('Ler tokens').first().json;\nconst f = t.respostas;\nconst campo = rotulo => String(f[rotulo] ?? '').trim();\nconst padrao = v => !v || /^padr[aã]o$/i.test(v);\nconst naoUsa = v => /n[aã]o usa/i.test(v);\nconst hexes = v => (v.match(/#?[0-9a-fA-F]{6}\\b/g) || []).map(h => '#' + h.replace('#', '').toUpperCase());\nconst passos = prefixo => Object.keys(t.base).filter(n => n.startsWith(prefixo + '/'))\n  .sort((a, b) => Number(a.split('/')[1].replace('_', '.')) - Number(b.split('/')[1].replace('_', '.')));\n\nconst trocasBase = [];   // { token, antes, depois, resposta }\nfunction trocar(token, depois, resposta) {\n  const antes = t.base[token].valor;\n  if (String(antes).toUpperCase() !== String(depois).toUpperCase()) trocasBase.push({ token, antes, depois, resposta });\n}\nconst apagar = [];       // nomes de variáveis a apagar\nconst alertas = [];\n\n// Perguntas 2 e 3: cores da marca\nconst marcas = [['brand-1', campo('Cor principal (brand-1)'), '2. Cor principal'],\n  ['brand-2', campo('Cor brand-2'), '3. Cores secundárias'],\n  ['brand-3', campo('Cor brand-3'), '3. Cores secundárias'],\n  ['brand-4', campo('Cor brand-4'), '3. Cores secundárias']];\nconst coresInformadas = {};\nfor (const [paleta, resposta, pergunta] of marcas) {\n  const nomes = passos(paleta);\n  if (paleta === 'brand-1' && naoUsa(resposta)) { alertas.push('2. Cor principal: brand-1 é obrigatória (seção 03). Informe a cor da marca ou deixe \"padrão\".'); continue; }\n  if (paleta !== 'brand-1' && naoUsa(resposta)) {\n    // Seção 06 e seção 10: a paleta brand-n sai junto com background/accent-n/*, text/on-accent-n-strong e icon/on-accent-n-strong\n    apagar.push(...nomes);\n    apagar.push(...Object.keys(t.semantic.light).filter(n => new RegExp(`(^|/|-)accent-paleta.split('-')[1](/|-|)`).test(n)));\n    continue;\n  }\n  if (padrao(resposta)) continue;\n  const lista = hexes(resposta);\n  if (lista.length === 0) { alertas.push(`pergunta({paleta}): \"${resposta}\" não tem código de cor. Use #RRGGBB.`); continue; }\n  if (lista.length === 1) {\n    coresInformadas[paleta] = lista[0];\n    alertas.push(`${pergunta} (paleta):sóumacor({lista[0]}). Gere a escala de 50 a 950 no uicolors.app (seção 05) e cole as ${nomes.length} cores no plugin, ou deixe o agente propor na etapa 2 dele. Nada muda na Base por aqui.`);\n    continue;\n  }\n  if (lista.length !== nomes.length) { alertas.push(`${pergunta} (${paleta}): recebi ${lista.length} cores, mas a Base tem nomes.lengthpassos({nomes[0]} a ${nomes[nomes.length - 1]}).`); continue; }\n  nomes.forEach((nome, i) => trocar(nome, lista[i], pergunta));\n}\n\n// Pergunta 4: neutro. neutral/0 continua branco e /1000 continua preto (seção 05); os passos do meio vão do mais claro ao mais escuro\nconst neutro = campo('Neutro');\nif (!padrao(neutro)) {\n  const lista = hexes(campo('Paleta neutra própria'));\n  const nomes = passos('neutral').filter(n => !['neutral/0', 'neutral/1000'].includes(n));\n  if (lista.length === nomes.length) {\n    const escurece = lista.every((h, i) => i === 0 || lum(h) <= lum(lista[i - 1]));\n    if (escurece) nomes.forEach((nome, i) => trocar(nome, lista[i], '4. Neutro'));\n    else alertas.push(`4. Neutro: a paleta informada não vai do mais claro ao mais escuro (limite do Ajustável, seção 05). Nada muda na Base.`);\n  } else if (/pr[oó]pria/i.test(neutro)) {\n    alertas.push(`4. Neutro \"paleta própria\": preciso de nomes.lengthcores({nomes[0]} a ${nomes[nomes.length - 1]}; neutral/0 e /1000 não mudam). Sem elas, nada muda na Base.`);\n  } else {\n    alertas.push(`4. Neutro \"${neutro}\": a paleta ${neutro} sai na etapa 2 do agente, dentro do limite da seção 05 (0 branco, 1000 preto, do claro ao escuro). Nada muda na Base por aqui.`);\n  }\n}\n\n// Perguntas 5 a 7: fontes e pesos. Seção 05: display e heading usam font-family/primary (peso 700); body usa /secondary (400) e label também (500)\nfor (const [token, rotulo, pergunta] of [['font-family/primary', 'Fonte dos títulos', '5. Fonte dos títulos'], ['font-family/secondary', 'Fonte do texto', '6. Fonte do texto']]) {\n  const v = campo(rotulo);\n  if (padrao(v)) continue;\n  if (!(token in t.base)) { alertas.push(`${pergunta}: ${token} não está na Base do JSON.`); continue; }\n  trocar(token, v, pergunta);\n}\nconst pesosTitulo = (campo('Pesos da fonte dos títulos').match(/\\d{3}/g) || []).map(Number);\nconst pesoPedido = padrao(campo('Peso dos títulos')) ? 700 : Number((campo('Peso dos títulos').match(/\\d{3}/) || [0])[0]);\nif (!padrao(campo('Fonte dos títulos')) && pesosTitulo.length && !pesosTitulo.includes(pesoPedido)) {\n  alertas.push(`7. Peso dos títulos: pesoPedidonãoestáentreospesosinformadosdafonte({pesosTitulo.join(', ')}).`);\n}\n\nconst pesosTexto = (campo('Pesos da fonte do texto').match(/\\d{3}/g) || []).map(Number);\nif (!padrao(campo('Fonte do texto')) && pesosTexto.length) {\n  const faltam = [400, 500].filter(p => !pesosTexto.includes(p));\n  if (faltam.length) alertas.push(`6. Fonte do texto: faltam os pesos ${faltam.join(' e ')} (body usa 400 e label usa 500, no Catálogo – Tipografia). A IA precisa trocar a referência de font-weight desses estilos.`);\n}\n\n// Pergunta 13: sem gráficos, o grupo data sai inteiro\nconst temGrafico = /^s/i.test(campo('O projeto tem gráficos?'));\nif (!temGrafico) {\n  apagar.push(...Object.keys(t.base).filter(n => /^data-\\d/.test(n)));\n  apagar.push(...Object.keys(t.semantic.light).filter(n => n.startsWith('data/')));\n}\n\n// Pré-checagem de contraste da cor principal (a conferência final é o T-09 do agente)\nfunction lum(hex) {\n  const c = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255)\n    .map(v => (v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)));\n  return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];\n}\nconst contraste = (a, b) => { const [x, y] = [lum(a), lum(b)].sort((m, n) => n - m); return (x + 0.05) / (y + 0.05); };\nconst refAcao = t.semantic.light['background/action/primary']?.ref;\nconst novaBase = Object.fromEntries(trocasBase.map(x => [x.token, x.depois]));\nconst corAcao = coresInformadas['brand-1'] || novaBase[refAcao] || t.base[refAcao]?.valor;\nconst precheck = [];\nif (corAcao) {\n  const textoAtual = t.semantic.light['text/on-action-primary']?.ref || '?';\n  for (const fundo of ['neutral/0', 'neutral/900']) {\n    const cor = t.base[fundo]?.valor;\n    if (!cor) continue;\n    const r = contraste(corAcao, cor);\n    precheck.push(`${fundo} (${cor}) sobre a cor da ação ${corAcao}: ${r.toFixed(2)}:1 ${r >= 4.5 ? 'passa' : 'não passa'} 4,5:1`);\n  }\n  precheck.push(`Hoje text/on-action-primary aponta para ${textoAtual} no modo claro.`);\n}\n\nconst apagarUnicos = [...new Set(apagar)];\nconst respostas = [\n  `1. Nome do projeto: ${campo('Nome do projeto')}`,\n  `2. Cor principal: ${campo('Cor principal (brand-1)') || 'padrão'}`,\n  `3. Secundárias: brand-2 ${campo('Cor brand-2') || 'padrão'}; brand-3 ${campo('Cor brand-3') || 'padrão'}; brand-4 ${campo('Cor brand-4') || 'padrão'}`,\n  `4. Neutro: ${neutro || 'padrão'}`,\n  `5. Fonte dos títulos: campo('Fontedostítulos')||'padrão'({campo('Pesos da fonte dos títulos') || 'pesos não informados'})`,\n  `6. Fonte do texto: campo('Fontedotexto')||'padrão'({campo('Pesos da fonte do texto') || 'pesos não informados'})`,\n  `7. Peso dos títulos: ${campo('Peso dos títulos') || 'padrão'}`,\n  `8. Densidade: ${campo('Densidade') || 'padrão'}`,\n  `9. Cantos: ${campo('Cantos') || 'padrão'}`,\n  `10. Bordas: ${campo('Bordas') || 'padrão'}`,\n  `11. Tamanho dos títulos de destaque: ${campo('Tamanho dos títulos de destaque') || 'padrão'}`,\n  `12. Página e superfícies: ${campo('Página e superfícies') || 'padrão'}`,\n  `13. Gráficos: ${temGrafico ? 'sim' : 'não'}`,\n].join('\\n');\n\nconst listaSemantica = Object.keys(t.semantic.light).filter(n => !apagarUnicos.includes(n))\n  .map(n => `${n} | claro: ${t.semantic.light[n].ref || t.semantic.light[n].valor} | escuro: ${t.semantic.dark[n]?.ref || t.semantic.dark[n]?.valor}`).join('\\n');\nconst listaBase = Object.keys(t.base).filter(n => !apagarUnicos.includes(n))\n  .map(n => `${n} = ${novaBase[n] ?? t.base[n].valor}`).join('\\n');\n\nconst contexto_ia = [\n  'RESPOSTAS DO QUESTIONÁRIO', respostas, '',\n  'JÁ CALCULADO EM CÓDIGO (não repita)',\n  `Trocas de valor na Base: ${trocasBase.length ? trocasBase.map(x => `${x.token}: ${x.antes} → ${x.depois}`).join('; ') : 'nenhuma'}`,\n  `Grupos apagados: ${apagarUnicos.length} variáveis`,\n  `Pré-checagem de contraste: ${precheck.join(' · ') || 'sem cor da ação para medir'}`,\n  `Alertas: ${alertas.join(' | ') || 'nenhum'}`, '',\n  'SEMÂNTICA (nome | referência atual nos dois modos)', listaSemantica, '',\n  'BASE (nome = valor, já com as trocas acima)', listaBase,\n].join('\\n');\n\nreturn [{ json: {\n  projeto: campo('Nome do projeto'),\n  respostas, trocasBase, apagar: apagarUnicos, alertas, precheck, temGrafico, contexto_ia,\n  contagem: {\n    base: [t.contagem.base, t.contagem.base - apagarUnicos.filter(n => n in t.base).length],\n    semantic: [t.contagem.semantic, t.contagem.semantic - apagarUnicos.filter(n => n in t.semantic.light).length],\n  },\n} }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -688,
+        -80
+      ],
+      "id": "3d016b87-a758-4479-b0d1-edb539a3ffef",
+      "name": "Conferir respostas"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Audita em código a proposta da IA: nomes que existem, referências para a Base, Travados e limites do Ajustável.\nconst t = $('Ler tokens').first().json;\nconst r = $('Conferir respostas').first().json;\nconst texto = $('Proposta').first().json.text || '';\n\nlet proposta;\ntry {\n  const limpo = texto.replace(/`{3}(json)?/g, '');\n  proposta = JSON.parse(limpo.slice(limpo.indexOf('{'), limpo.lastIndexOf('}') + 1));\n} catch (e) {\n  throw new Error('A IA não devolveu um JSON válido. Rode o nó Proposta de novo. Início da resposta: ' + texto.slice(0, 200));\n}\nconst trocas = Array.isArray(proposta.trocas) ? proposta.trocas : [];\nconst duvidas = Array.isArray(proposta.duvidas) ? proposta.duvidas : [];\n\nconst valorBase = Object.fromEntries(Object.entries(t.base).map(([n, v]) => [n, v.valor]));\nfor (const x of r.trocasBase) valorBase[x.token] = x.depois;\nconst num = v => Number(String(v).replace(',', '.'));\nconst feedback = ['danger', 'warning', 'success', 'information'];\nconst paletaDe = ref => (ref || '').split('/')[0];\n\n// 1. Cada troca, uma por uma\nconst resultado = trocas.map(x => {\n  const token = String(x.token || '').trim();\n  const claro = String(x.claro || '').trim();\n  const escuro = String(x.escuro || '').trim();\n  const motivos = [];\n  const atual = t.semantic.light[token];\n  if (!atual) motivos.push('T-01: o token não existe na Semântica');\n  if (r.apagar.includes(token)) motivos.push('T-08: o token é de um grupo que vai ser apagado');\n  for (const [modo, ref] of [['claro', claro], ['escuro', escuro]]) {\n    if (!(ref in t.base)) motivos.push(`T-03: a referência ${modo} \"${ref}\" não existe na Base`);\n    else if (r.apagar.includes(ref)) motivos.push(`T-08: a referência ${modo} \"${ref}\" vai ser apagada`);\n  }\n  if (atual) {\n    const pAtual = paletaDe(atual.ref);\n    if (feedback.includes(pAtual) && (paletaDe(claro) !== pAtual || paletaDe(escuro) !== pAtual)) motivos.push(`T-05: ${token} precisa ficar dentro da paleta ${pAtual}`);\n    const acc = token.match(/accent-(\\d)/);\n    if (acc && (paletaDe(claro) !== `brand-${acc[1]}` || paletaDe(escuro) !== `brand-acc[1]`))motivos.push(`T-05:accent-{acc[1]} só aponta para brand-${acc[1]}`);\n  }\n  if (token === 'radius/full' && (claro !== 'radius/full' || escuro !== 'radius/full')) motivos.push('T-05: radius/full continua radius/full, mesmo com cantos retos');\n  if (/^typography\\/[^/]+\\/font-family$/.test(token) && ![claro, escuro].every(ref => /^font-family\\/(primary|secondary)$/.test(ref))) motivos.push('T-05: a família aponta só para font-family/primary ou /secondary');\n  if (/^shadow\\/[^/]+\\/(offset-x|offset-y|blur|spread)$/.test(token) && ![claro, escuro].every(ref => ref.startsWith('space/'))) motivos.push('T-05: deslocamento, desfoque e espalhamento da sombra apontam só para space');\n  if (token.startsWith('border-width/')) {\n    for (const ref of [claro, escuro]) {\n      const v = num(valorBase[ref]);\n      if (!(v >= 0.5 && v <= 8)) motivos.push(`T-05: border-width fora de 0,5 a 8 px (${ref} = ${valorBase[ref]})`);\n      if (token === 'border-width/focus' && v < 2) motivos.push('T-05: o foco nunca fica abaixo de 2 px');\n    }\n  }\n  return {\n    token, claro, escuro,\n    antes: atual ? `${atual.ref || atual.valor} | ${t.semantic.dark[token]?.ref || t.semantic.dark[token]?.valor}` : '—',\n    resposta: x.resposta || '', motivo: x.motivo || '',\n    ok: motivos.length === 0, problemas: [...new Set(motivos)],\n  };\n});\n\n// 2. Conjunto depois das trocas aprovadas: um tamanho nunca maior que o seguinte em space e radius\nconst depois = {};\nfor (const modo of ['light', 'dark']) {\n  depois[modo] = Object.fromEntries(Object.entries(t.semantic[modo]).map(([n, v]) => [n, v.ref]));\n  for (const x of resultado.filter(y => y.ok)) depois[modo][x.token] = modo === 'light' ? x.claro : x.escuro;\n}\nconst ordem = ['none', 'xx-small', 'x-small', 'small', 'medium', 'large', 'x-large', 'xx-large'];\nconst conjunto = [];\nfor (const grupo of ['space', 'radius']) {\n  let anterior = null;\n  for (const tamanho of ordem) {\n    const nome = `${grupo}/${tamanho}`;\n    if (!(nome in depois.light)) continue;\n    const v = num(valorBase[depois.light[nome]]);\n    if (anterior && v < anterior.v) conjunto.push(`T-05: anterior.nome({anterior.v}) ficou maior que nome({v})`);\n    anterior = { nome, v };\n  }\n}\n\n// 3. Altura de linha (seção 05): 1,3 × em display e heading, 1,5 × em body e label, arredondada para o múltiplo de 4 mais próximo; no empate, para cima\nconst alturas = Object.keys(valorBase).filter(n => n.startsWith('line-height/')).map(n => num(valorBase[n]));\nfor (const nome of Object.keys(depois.light).filter(n => /^typography\\/[^/]+\\/[^/]+\\/font-size$/.test(n))) {\n  const papel = nome.split('/')[1];\n  const fator = ['display', 'heading'].includes(papel) ? 1.3 : 1.5;\n  const tamanho = num(valorBase[depois.light[nome]]);\n  const linha = nome.replace('font-size', 'line-height');\n  if (!(linha in depois.light) || !alturas.length || !tamanho) continue;\n  const esperado = Math.round((tamanho * fator) / 4) * 4;\n  const atual = num(valorBase[depois.light[linha]]);\n  if (!alturas.includes(esperado)) conjunto.push(`Alerta T-05: ${linha} deveria ser esperado({fator} × tamanho),masline-height/{esperado} não está na Base`);\n  else if (atual !== esperado) conjunto.push(`T-05: ${linha} = ${atual}, mas ${fator} × ${tamanho} = ${(tamanho * fator).toFixed(1)}, que arredonda para ${esperado}`);\n}\n\nconst aprovadas = resultado.filter(x => x.ok);\nconst reprovadas = resultado.filter(x => !x.ok);\nconst linhaTroca = x => `${x.token}: ${x.antes} → ${x.claro} | x.escuro({x.resposta}${x.motivo ? '; ' + x.motivo : ''})`;\nconst resumo = [\n  `Projeto: ${r.projeto}`,\n  `Trocas na Base (do questionário, em código): ${r.trocasBase.length}`,\n  `Trocas na Semântica propostas pela IA: ${trocas.length} · passaram na auditoria: ${aprovadas.length} · reprovadas: ${reprovadas.length}`,\n  `Variáveis a apagar (grupos opcionais): ${r.apagar.length}`,\n  '',\n  'TROCAS QUE PASSARAM', aprovadas.map(linhaTroca).join('\\n') || 'nenhuma', '',\n  'TROCAS REPROVADAS PELA AUDITORIA', reprovadas.map(x => `${linhaTroca(x)} → ${x.problemas.join('; ')}`).join('\\n') || 'nenhuma', '',\n  'CONJUNTO DEPOIS DAS TROCAS', conjunto.join('\\n') || 'sem problemas em space, radius e altura de linha', '',\n  'ALERTAS DO QUESTIONÁRIO', r.alertas.join('\\n') || 'nenhum', '',\n  'PRÉ-CHECAGEM DE CONTRASTE DA COR PRINCIPAL', r.precheck.join('\\n') || '—', '',\n  'DÚVIDAS DA IA', duvidas.join('\\n') || 'nenhuma',\n].join('\\n');\n\nreturn [{ json: { aprovadas, reprovadas, conjunto, duvidas, resumo } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -96,
+        -80
+      ],
+      "id": "e64b9987-d876-4971-80bd-b5e2b62c68a5",
+      "name": "Auditar proposta"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Monta a ficha de personalização (vai para o Drive), o plano que o plugin mostra na prévia e aplica, e a linha da tabela de medição.\n// A decisão agora é no plugin: Aplicar ou Recusar. Este nó não espera aprovação por e-mail.\nconst t = $('Ler tokens').first().json;\nconst r = $('Conferir respostas').first().json;\nconst a = $('Auditar proposta').first().json;\nconst f = t.respostas;\nconst hoje = new Date().toLocaleDateString('sv-SE', { timeZone: 'America/Fortaleza' }).replaceAll('-', '.'); // AAAA.MM.DD, como as versões (seção 08)\nconst minutos = Math.round((Date.now() - new Date(t.inicio)) / 60000);\nconst linhaProjetos = `${r.projeto} · ${f['Versão de origem'] || '[versão]'} · ${f['Quem duplicou'] || '[quem duplicou]'} · ${hoje} · ${r.temGrafico ? 'Sim' : 'Não'}`;\n\n// O plano é o que o plugin mostra e aplica: só o que passou na auditoria\nconst plano = {\n  versao: 2,\n  pedidoId: t.pedidoId,\n  projeto: r.projeto,\n  arquivo: t.arquivo,\n  data: hoje,\n  base: r.trocasBase.map(x => ({ token: x.token, valor: x.depois })),\n  semantic: a.aprovadas.map(x => ({ token: x.token, claro: x.claro, escuro: x.escuro })),\n  apagar: r.apagar,\n  pendencias: [...r.alertas, ...a.conjunto, ...a.duvidas],\n  linhaProjetos,\n};\n\nconst ficha = [\n  `Ficha de personalização: ${r.projeto}`,\n  `Proposta de ${hoje}. A decisão é no plugin (Aplicar ou Recusar) e fica registrada na tabela.`,\n  `Arquivo: ${t.arquivo}`,\n  `Código do pedido: ${t.pedidoId || '—'}`,\n  '',\n  '1. Questionário de identidade',\n  r.respostas,\n  '',\n  '2. Trocas de valor na Base (etapa 3)',\n  r.trocasBase.map(x => `${x.token}: ${x.antes} → x.depois({x.resposta})`).join('\\n') || 'nenhuma',\n  '',\n  '3. Trocas de referência na Semântica (etapa 4), antes → claro | escuro',\n  a.aprovadas.map(x => `${x.token}: ${x.antes} → ${x.claro} | x.escuro({x.resposta})`).join('\\n') || 'nenhuma',\n  '',\n  '4. Grupos opcionais a apagar (etapa 5)',\n  r.apagar.join('\\n') || 'nenhum',\n  `Contagem: Base ${r.contagem.base[0]} → ${r.contagem.base[1]} · Semântica ${r.contagem.semantic[0]} → ${r.contagem.semantic[1]}`,\n  '',\n  '5. O que a auditoria reprovou e ficou de fora',\n  a.reprovadas.map(x => `${x.token}: ${x.problemas.join('; ')}`).join('\\n') || 'nada',\n  a.conjunto.join('\\n'),\n  '',\n  '6. Alertas, pré-checagem de contraste e dúvidas',\n  [...r.alertas, ...r.precheck, ...a.duvidas].join('\\n') || 'nenhum',\n  '',\n  '7. Como aplicar no Figma',\n  'A prévia abre sozinha no plugin, no mesmo arquivo. Se fechou, abra o plugin e clique em Ver proposta. Aplicar faz as partes 2, 3 e 4 e mede o contraste; o que está na parte 6 fica para você.',\n  '',\n  '8. Linha para a lista de projetos (quadro Registro, página Specifics: Projeto · Versão de origem · Quem duplicou · Data · Usa o grupo data?)',\n  linhaProjetos,\n].join('\\n');\n\nreturn [{ json: {\n  ficha,\n  nome_arquivo: `Personalização – ${r.projeto}`,\n  linha: {\n    data: hoje,\n    projeto: r.projeto,\n    minutos_automacao: minutos,\n    trocas_base: r.trocasBase.length,\n    trocas_semantica: a.aprovadas.length,\n    trocas_reprovadas: a.reprovadas.length,\n    alertas: r.alertas.length + a.conjunto.length,\n    grupos_apagados: r.apagar.length,\n    aprovado: 'pendente',\n    ficha,\n    pedido_id: t.pedidoId,\n    plano: JSON.stringify(plano),\n  },\n} }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        144,
+        -80
+      ],
+      "id": "d8f05a81-9278-4296-9021-3e159c74370f",
+      "name": "Montar ficha"
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.5-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        -464,
+        112
+      ],
+      "id": "6fac8717-2399-4179-b49c-2ee3fea39485",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "SUA_CREDENCIAL",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Salvar no Drive": {
+      "main": [
+        [
+          {
+            "node": "Medir",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Medir": {
+      "main": [
+        [
+          {
+            "node": "Data table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Receber do plugin": {
+      "main": [
+        [
+          {
+            "node": "Ler tokens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ler tokens": {
+      "main": [
+        [
+          {
+            "node": "Ler documentação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resumir documentação": {
+      "main": [
+        [
+          {
+            "node": "Conferir respostas",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ler documentação": {
+      "main": [
+        [
+          {
+            "node": "Resumir documentação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Proposta": {
+      "main": [
+        [
+          {
+            "node": "Auditar proposta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Conferir respostas": {
+      "main": [
+        [
+          {
+            "node": "Proposta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Auditar proposta": {
+      "main": [
+        [
+          {
+            "node": "Montar ficha",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Montar ficha": {
+      "main": [
+        [
+          {
+            "node": "Salvar no Drive",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Proposta",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Tokens – personalizar projeto"
+}

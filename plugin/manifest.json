@@ -1,0 +1,19 @@
+{
+  "name": "Tokens do Lab → n8n",
+  "id": "tokens-do-lab-n8n",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "editorType": [
+    "figma"
+  ],
+  "documentAccess": "dynamic-page",
+  "networkAccess": {
+    "allowedDomains": [
+      "https://*.app.n8n.cloud",
+      "https://api.fontshare.com",
+      "https://cdn.fontshare.com"
+    ],
+    "reasoning": "Envia as variáveis do arquivo para os fluxos do n8n e carrega a fonte Satoshi da interface."
+  }
+}

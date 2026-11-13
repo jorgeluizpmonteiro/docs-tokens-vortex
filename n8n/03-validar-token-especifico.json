@@ -1,0 +1,637 @@
+{
+  "nodes": [
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.5-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.2,
+      "position": [
+        832,
+        112
+      ],
+      "id": "45e4a6ff-cf9e-4879-aa30-2605f23b2f5d",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "SUA_CREDENCIAL",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sendTo": "EMAIL_DA_LEAD@exemplo.com",
+        "subject": "={{ $json.assunto }}",
+        "message": "={{ $json.email_html }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        1408,
+        -80
+      ],
+      "id": "1403343a-a464-4700-9a68-8b3b754cb394",
+      "name": "Aprovação",
+      "webhookId": "6c510af9-002f-4d1b-b496-13e96eab54d1",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "SUA_CREDENCIAL",
+          "name": "Gmail account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "// Pega a linha que o Montar registro preparou e entrega para o Data table.\nconst registro = $('Montar registro').first().json;\nif (!registro.linha || typeof registro.linha !== 'object') {\n  throw new Error('O Montar registro não devolveu a linha. Rode o Test step dele antes deste.');\n}\nreturn [{ json: registro.linha }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2128,
+        -80
+      ],
+      "id": "b9859c56-d39d-48db-a380-721a6f38a7cc",
+      "name": "Medir"
+    },
+    {
+      "parameters": {
+        "dataTableId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "ID_DA_TABELA",
+          "cachedResultName": "registro_propostas"
+        },
+        "columns": {
+          "mappingMode": "autoMapInputData",
+          "value": {},
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "data",
+              "displayName": "data",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "projeto",
+              "displayName": "projeto",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "token",
+              "displayName": "token",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "uso",
+              "displayName": "uso",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "necessidade",
+              "displayName": "necessidade",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "claro",
+              "displayName": "claro",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "escuro",
+              "displayName": "escuro",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "recomendacao_ia",
+              "displayName": "recomendacao_ia",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "decisao",
+              "displayName": "decisao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "parecer",
+              "displayName": "parecer",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "observacao",
+              "displayName": "observacao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "falhas",
+              "displayName": "falhas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "alertas",
+              "displayName": "alertas",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "minutos_ate_decisao",
+              "displayName": "minutos_ate_decisao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            },
+            {
+              "id": "minutos_revisao",
+              "displayName": "minutos_revisao",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "number",
+              "readOnly": false,
+              "removed": false
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        2352,
+        -80
+      ],
+      "id": "f7e8863d-a5fb-4ea7-b8e9-824542b05990",
+      "name": "Data table"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "tokens-validar",
+        "options": {
+          "rawBody": true
+        }
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.2,
+      "position": [
+        -512,
+        -80
+      ],
+      "id": "0d589040-2ade-4198-9448-2929b184da28",
+      "name": "Receber do plugin",
+      "webhookId": "82338a6f-de41-4eab-a4a3-a8ccebb987ca"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Recebe o pacote que o plugin do Figma enviou (variáveis + respostas ou pedido) e deixa no formato que os próximos nós usam.\nconst entrada = $input.first();\nlet corpo = entrada.json.body;\nif (typeof corpo === 'string') corpo = corpo.trim() ? JSON.parse(corpo) : null;\nif ((!corpo || !corpo.base) && entrada.binary) {\n  const chave = Object.keys(entrada.binary)[0];\n  if (chave) corpo = JSON.parse((await this.helpers.getBinaryDataBuffer(0, chave)).toString('utf8'));\n}\nif (!corpo || !corpo.base) {\n  throw new Error('O pacote do plugin não chegou. No nó Webhook, confira se a opção Raw Body está ligada.');\n}\nif (!Object.keys(corpo.semantic?.light || {}).length) {\n  throw new Error('Não achei a coleção semantic com o modo light. Coleções do arquivo: ' + (corpo.colecoes || []).join(', '));\n}\n\nreturn [{ json: {\n  inicio: new Date().toISOString(),\n  acao: corpo.acao,\n  arquivo: corpo.arquivo,\n  respostas: corpo.respostas || {},\n  pedido: corpo.pedido || {},\n  base: corpo.base,\n  semantic: corpo.semantic,\n  specific: corpo.specific || { light: {}, dark: {} },\n  contagem: {\n    base: Object.keys(corpo.base).length,\n    semantic: Object.keys(corpo.semantic.light).length,\n    specific: Object.keys(corpo.specific?.light || {}).length,\n  },\n} }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -288,
+        -80
+      ],
+      "id": "7ab4073a-e72c-4b59-90fc-dd2e131159d5",
+      "name": "Ler tokens"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Lê o texto da documentação (arquivo .md no Google Drive) e limpa o que não é texto, para a IA seguir as diretrizes.\n// A API do Figma não entrega o texto dos blocos de spec, por isso a fonte é o .md exportado da documentação.\nconst item = $input.first();\nconst chave = Object.keys(item.binary || {})[0];\nif (!chave) throw new Error('O nó Ler documentação não trouxe arquivo. Confira se a Operation é Download e se o arquivo é o .md da documentação.');\nconst bruto = (await this.helpers.getBinaryDataBuffer(0, chave)).toString('utf8');\nconst documentacao = bruto\n  .replace(/^\\[image\\d+\\]:.*$/gm, '')        // imagens embutidas em base64\n  .replace(/!\\[[^\\]]*\\]\\[[^\\]]*\\]/g, '')      // marcadores das imagens\n  .replace(/\\\\([-#.()_*\\[\\]])/g, '$1')        // barras de escape do export do Docs\n  .replace(/\\*\\*/g, '')\n  .replace(/\\n{3,}/g, '\\n\\n')\n  .trim()\n  .slice(0, 150000);\nif (documentacao.length < 1000) throw new Error(`Só vieram ${documentacao.length} caracteres. Confira se o arquivo baixado é o .md da documentação.`);\nreturn [{ json: { documentacao, caracteres: documentacao.length } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        160,
+        -80
+      ],
+      "id": "0fc07307-4c28-4a18-8af9-a4aa1a4469fb",
+      "name": "Resumir documentação"
+    },
+    {
+      "parameters": {
+        "operation": "download",
+        "fileId": {
+          "__rl": true,
+          "mode": "url",
+          "value": "https://drive.google.com/file/d/ID_DO_ARQUIVO_MD/view"
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [
+        -64,
+        -80
+      ],
+      "id": "833227bc-e164-4af9-8426-f1aab5dd1b3f",
+      "name": "Ler documentação",
+      "credentials": {
+        "googleDriveOAuth2Api": {
+          "id": "SUA_CREDENCIAL",
+          "name": "Google Drive account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "dataTableId": {
+          "__rl": true,
+          "mode": "list",
+          "value": "ID_DA_TABELA",
+          "cachedResultName": "registro_propostas"
+        },
+        "returnAll": true
+      },
+      "type": "n8n-nodes-base.dataTable",
+      "typeVersion": 1.1,
+      "position": [
+        384,
+        -80
+      ],
+      "id": "53260fe7-1115-45c6-a737-63b094fc6e44",
+      "name": "Buscar registro",
+      "alwaysOutputData": true
+    },
+    {
+      "parameters": {
+        "jsCode": "// Confere em código a variável que o estagiário criou no Figma. A IA só entra depois, no que pede julgamento.\nconst t = $('Ler tokens').first().json;\nconst pedido = t.pedido;\nconst nome = String(pedido.variavel || '').trim();\nconst vClaro = t.specific.light[nome];\nconst vEscuro = t.specific.dark[nome] || {};\nif (!vClaro) throw new Error(`A variável \"${nome}\" não está na coleção specific do arquivo enviado.`);\n\n// A descrição da variável traz os seis rótulos: Uso, Não usar, Par, Flexibilidade, Situação, Valor\nconst rotulos = ['Uso', 'Não usar', 'Par', 'Flexibilidade', 'Situação', 'Valor'];\nconst desc = {};\nconst ordemLida = [];\nfor (const linha of String(vClaro.descricao).split('\\n')) {\n  const m = linha.match(/^\\s*(Uso|Não usar|Par|Flexibilidade|Situação|Valor)\\s*:\\s*(.*)$/);\n  if (m) { desc[m[1]] = m[2].trim(); ordemLida.push(m[1]); }\n}\n\nconst proposta = {\n  nome: nome.toLowerCase(),\n  uso: desc['Uso'] || '',\n  naoUsar: desc['Não usar'] || '',\n  par: (desc['Par'] || '').split(/[,;]/).map(s => s.trim().toLowerCase()).filter(s => s && !/^[—–-]$/.test(s)),\n  claro: vClaro.ref || '',\n  escuro: vEscuro.ref || '',\n  flexibilidade: desc['Flexibilidade'] || '',\n  situacao: desc['Situação'] || '',\n  linhaValor: desc['Valor'] || '',\n  escopos: vClaro.escopos || [],\n  porque: String(pedido.porque || '').trim(),\n  projeto: String(pedido.projeto || t.arquivo || '').trim(),\n  quemPropoe: String(pedido.quemPropoe || '').trim(),\n  data: String(pedido.data || '').trim(),\n};\nconst valores = { claro: vClaro.valor, escuro: vEscuro.valor };\n\nconst checagens = [];\nconst add = (id, teste, resultado, detalhe) => checagens.push({ id, teste, resultado, detalhe });\n\n// R-01 Formato do nome: minúsculas, barra entre níveis, hífen dentro do nível; sublinhado só na casa decimal\nconst niveis = proposta.nome.split('/');\nconst composto = ['typography', 'shadow'].includes(niveis[0]);\nconst maxNiveis = composto ? 4 : 3;\nconst formatoOk = nome === proposta.nome\n  && /^[a-z0-9_-]+(\\/[a-z0-9_-]+)+$/.test(proposta.nome)\n  && niveis.length <= maxNiveis\n  && niveis.every(n => /^[a-z0-9]+([-_][a-z0-9]+)*$/.test(n));\nadd('R-01', 'Formato do nome', formatoOk ? 'passa' : 'falha',\n  formatoOk ? `${niveis.length} níveis` : `Use minúsculas, barra entre níveis (no máximo ${maxNiveis}) e hífen dentro do nível. Recebido: \"${nome}\"`);\n\n// R-02 Primeiro nível é uma propriedade do vocabulário\nconst propriedades = ['text', 'icon', 'background', 'border', 'space', 'radius', 'border-width', 'opacity', 'typography', 'shadow', 'data'];\nconst propriedade = niveis[0];\nadd('R-02', 'Propriedade do vocabulário', propriedades.includes(propriedade) ? 'passa' : 'falha',\n  propriedades.includes(propriedade) ? propriedade : `\"${propriedade}\" não é propriedade. Use: ${propriedades.join(', ')}`);\n\n// R-03 Sem o nome do projeto no nome do token\nconst semAcento = s => String(s).normalize('NFD').replace(/\\p{M}/gu, '').toLowerCase();\nconst palavrasProjeto = semAcento(proposta.projeto).split(/[^a-z0-9]+/).filter(p => p.length >= 4);\nconst achouProjeto = palavrasProjeto.find(p => semAcento(proposta.nome).includes(p));\nadd('R-03', 'Sem o nome do projeto', achouProjeto ? 'falha' : 'passa',\n  achouProjeto ? `O nome contém \"${achouProjeto}\", do nome do projeto` : '—');\n\n// R-04 Palavra nova descreve o uso, nunca a aparência nem o componente (alerta)\nconst aparencia = ['red', 'blue', 'green', 'yellow', 'orange', 'purple', 'pink', 'gray', 'grey', 'black', 'white', 'sepia', 'dark', 'light', 'warm', 'cool', 'big', 'tiny', 'thick', 'thin'];\nconst componentes = ['button', 'btn', 'card', 'modal', 'menu', 'input', 'field', 'chip', 'badge', 'tab', 'toast', 'tooltip', 'header', 'footer', 'sidebar', 'navbar', 'dialog', 'table', 'list'];\nconst ruimNome = proposta.nome.split(/[\\/-]/).filter(p => aparencia.includes(p) || componentes.includes(p));\nadd('R-04', 'Sem aparência nem componente no nome', ruimNome.length ? 'alerta' : 'passa',\n  ruimNome.length ? `Palavras a revisar: ${ruimNome.join(', ')}` : '—');\n\n// R-05 Não repete um token da Semântica\nconst naSemantica = proposta.nome in t.semantic.light;\nadd('R-05', 'Não repete a Semântica', naSemantica ? 'falha' : 'passa',\n  naSemantica ? 'Já existe na Semântica: use esse token (pergunta 1)' : '—');\n\n// R-06 Os dois modos apontam para a Base (nunca valor digitado, nunca Semântica)\nfor (const [modo, v] of [['Claro', vClaro], ['Escuro', vEscuro]]) {\n  let r = 'passa', d = `${v.ref} = ${v.valor}`;\n  if (!v.ref) { r = 'falha'; d = v.valor !== undefined ? `Valor digitado (${v.valor}). Aponte para uma variável da Base` : 'Modo vazio'; }\n  else if (v.refColecao !== 'base') { r = 'falha'; d = `${v.ref} é da coleção ${v.refColecao}. Aponte para a Base`; }\n  add('R-06', `${modo} aponta para a Base`, r, d);\n}\n\n// R-07 Contraste nos dois modos (WCAG 2.2 AA). No token não existe tamanho de texto, então texto é sempre 4,5:1.\nfunction lum(hex) {\n  const c = [1, 3, 5].map(i => parseInt(hex.slice(i, i + 2), 16) / 255)\n    .map(v => (v <= 0.04045 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4)));\n  return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];\n}\nfunction contraste(a, b) {\n  const [l1, l2] = [lum(a), lum(b)].sort((x, y) => y - x);\n  return (l1 + 0.05) / (l2 + 0.05);\n}\nconst minimo = n => {\n  const p = n.split('/')[0];\n  if (p === 'text') return 4.5;\n  if (p === 'border' && /subtle/.test(n)) return 0;\n  if (['icon', 'border', 'data'].includes(p)) return 3;\n  return null;\n};\nconst corDe = (n, modo) => (t.semantic[modo][n] || t.specific[modo][n] || {}).valor;\nif (['text', 'icon', 'background', 'border', 'data'].includes(propriedade)) {\n  const minha = { light: vClaro.valor, dark: vEscuro.valor };\n  let pares = proposta.par;\n  if (!pares.length) pares = propriedade === 'background' ? ['text/primary'] : ['background/canvas', 'background/surface'];\n  const souFundo = propriedade === 'background';\n  const linhas = [];\n  let falhou = false, semDado = false, medidos = 0;\n  for (const modo of ['light', 'dark']) {\n    for (const outro of pares) {\n      const a = minha[modo], b = corDe(outro, modo);\n      if (!/^#[0-9A-F]{6}/i.test(a||'')||!/#[0-9A-F]6/i.test(b || '')) { semDado = true; continue; }\n      const frente = souFundo ? outro : proposta.nome;\n      const min = minimo(frente);\n      if (min === null) continue;\n      const valor = contraste(a, b);\n      const ok = valor >= min;\n      medidos++;\n      if (!ok) falhou = true;\n      linhas.push(`${modo === 'light' ? 'claro' : 'escuro'}: ${frente} × ${souFundo ? proposta.nome : outro} = ${valor.toFixed(2)}:1 (mínimo ${min}:1) ${ok ? 'passa' : 'FALHA'}`);\n    }\n  }\n  if (!proposta.par.length) linhas.push(`Par vazio: conferi contra ${pares.join(' e ')}`);\n  if (semDado) linhas.push('Algum par sem cor: conferir no Figma');\n  add('R-07', 'Contraste nos dois modos', falhou ? 'falha' : medidos ? 'passa' : 'alerta', linhas.join(' · ') || 'Nenhum par para medir');\n}\n\n// R-08 Escopo igual ao do grupo (T-06)\n// Lista da seção 10 (Prompt para configurar, \"Escopo por grupo\"), com os nomes da Plugin API\nconst escopoEsperado = {\n  text: ['TEXT_FILL'], icon: ['SHAPE_FILL', 'STROKE_COLOR'], background: ['FRAME_FILL', 'SHAPE_FILL'],\n  border: ['STROKE_COLOR'], data: ['FRAME_FILL', 'SHAPE_FILL', 'STROKE_COLOR'], space: ['GAP'],\n  radius: ['CORNER_RADIUS'], 'border-width': ['STROKE_FLOAT'], opacity: ['OPACITY'],\n};\nconst campoComposto = {\n  'font-size': ['FONT_SIZE'], 'line-height': ['LINE_HEIGHT'], 'font-weight': ['FONT_WEIGHT'], 'letter-spacing': ['LETTER_SPACING'],\n  'font-family': ['FONT_FAMILY'], 'offset-x': ['EFFECT_FLOAT'], 'offset-y': ['EFFECT_FLOAT'], blur: ['EFFECT_FLOAT'], spread: ['EFFECT_FLOAT'], color: ['EFFECT_COLOR'],\n};\nconst esperado = composto ? campoComposto[niveis[niveis.length - 1]] : escopoEsperado[propriedade];\nif (esperado) {\n  const igual = esperado.length === proposta.escopos.length && esperado.every(e => proposta.escopos.includes(e));\n  add('R-08', 'Escopo do grupo', igual ? 'passa' : 'falha',\n    igual ? esperado.join(', ') : `Esperado: ${esperado.join(', ')}. No Figma: ${proposta.escopos.join(', ') || 'nenhum (ou todos)'}`);\n} else {\n  add('R-08', 'Escopo do grupo', 'alerta', `Para ${propriedade}, conferir o escopo no Figma`);\n}\n\n// R-09 Descrição com os seis rótulos, na ordem (T-07)\nconst faltamRotulos = rotulos.filter(r => !(r in desc));\nconst naOrdem = ordemLida.join('|') === rotulos.join('|');\nadd('R-09', 'Descrição com os seis rótulos', !faltamRotulos.length && naOrdem ? 'passa' : 'falha',\n  faltamRotulos.length ? `Faltam: ${faltamRotulos.join(', ')}` : naOrdem ? '—' : `Ordem lida: ${ordemLida.join(', ')}`);\n\n// R-10 Situação começa como Proposto\nadd('R-10', 'Situação: Proposto', /^proposto$/i.test(proposta.situacao) ? 'passa' : 'falha',\n  `Na descrição: \"${proposta.situacao || 'vazio'}\"`);\n\n// R-11 A linha Valor bate com as referências reais\nconst valorOk = proposta.claro && proposta.escuro && proposta.linhaValor.includes(proposta.claro) && proposta.linhaValor.includes(proposta.escuro);\nadd('R-11', 'Linha Valor igual à referência', valorOk ? 'passa' : 'falha',\n  `Descrição: \"${proposta.linhaValor || 'vazio'}\" · Figma: ${proposta.claro || '?'} | ${proposta.escuro || '?'}`);\n\n// R-12 Uso e Não usar falam do papel na interface, sem nome de componente (alerta)\nconst compPt = ['botão', 'botao', 'campo', 'cartão', 'cartao', 'card', 'menu', 'modal', 'input', 'button', 'chip', 'badge', 'aba', 'tooltip', 'toast'];\nconst textoDesc = semAcento(proposta.uso + ' ' + proposta.naoUsar);\nconst achados = compPt.filter(c => new RegExp(`\\\\b${semAcento(c)}\\\\b`).test(textoDesc));\nadd('R-12', 'Uso e Não usar sem componente', achados.length ? 'alerta' : 'passa',\n  achados.length ? `Encontrei: ${achados.join(', ')}` : '—');\n\n// Tokens que já existem com a mesma propriedade, para a IA responder a pergunta 1\nconst linhaUso = d => (String(d).split('\\n').find(l => l.startsWith('Uso:')) || '').replace('Uso:', '').trim();\nconst candidatos = [];\nfor (const [colecao, mapa] of [['semantic', t.semantic], ['specific', t.specific]]) {\n  for (const [n, v] of Object.entries(mapa.light)) {\n    if (n === nome || n.split('/')[0] !== propriedade) continue;\n    candidatos.push(`${n} (${colecao}) | claro: ${v.ref || v.valor} | escuro: ${mapa.dark[n]?.ref || mapa.dark[n]?.valor || '?'} | uso: ${linhaUso(v.descricao) || 'sem descrição'}`);\n  }\n}\n\n// Específicos já aprovados em outros projetos (tabela registro_propostas), para a pergunta 3\nconst aprovados = $('Buscar registro').all().map(i => i.json)\n  .filter(r => r.token && r.decisao === 'aprovado' && r.projeto !== proposta.projeto)\n  .map(r => `${r.token} | projeto: ${r.projeto} | necessidade: ${r.necessidade || r.uso}`);\n\nconst falhas = checagens.filter(c => c.resultado === 'falha').length;\nconst alertas = checagens.filter(c => c.resultado === 'alerta').length;\nconst tabela = checagens.map(c => `${c.id} ${c.teste}: ${c.resultado.toUpperCase()} — ${c.detalhe}`).join('\\n');\n\nconst contexto_ia = [\n  'VARIÁVEL CRIADA NO FIGMA',\n  `Nome: ${proposta.nome}`,\n  `Claro: proposta.claro({vClaro.valor}) | Escuro: proposta.escuro({vEscuro.valor})`,\n  `Escopo: ${proposta.escopos.join(', ') || 'nenhum'}`,\n  'Descrição:', vClaro.descricao || '(vazia)',\n  `Por que nenhum token serve: ${proposta.porque}`,\n  `Projeto: ${proposta.projeto}`,\n  '',\n  `CHECAGENS EM CÓDIGO (${falhas} falhas, ${alertas} alertas)`,\n  tabela,\n  '',\n  `TOKENS QUE JÁ EXISTEM COM A PROPRIEDADE \"${propriedade}\" (${candidatos.length})`,\n  candidatos.slice(0, 80).join('\\n') || 'nenhum',\n  '',\n  `ESPECÍFICOS APROVADOS EM OUTROS PROJETOS (${aprovados.length})`,\n  aprovados.join('\\n') || 'nenhum ainda',\n].join('\\n');\n\nreturn [{ json: { proposta, valores, checagens, falhas, alertas, contexto_ia } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        608,
+        -80
+      ],
+      "id": "f981dc7a-0c06-4703-8a0f-c34f0f97ab58",
+      "name": "Conferir regras"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Você é o revisor de tokens do laboratório. Recebe a variável Específica que um estagiário criou no Figma, o resultado das checagens feitas em código, a lista dos tokens que já existem com a mesma propriedade e a documentação oficial do laboratório. Escreva um parecer curto para quem aprova decidir. Você recomenda; quem decide é quem aprova.\n\n## Regras\n0. A documentação do laboratório (no fim) é a fonte das regras. Se algo deste prompt for diferente dela, siga a documentação e diga o que diferiu.\n1. As checagens foram calculadas em código. Não refaça nem contradiga. Se alguma deu FALHA, a recomendação não pode ser \"aprovar\".\n2. Só cite tokens que estão na proposta ou nas listas abaixo. Nunca invente nome, valor, contraste nem regra.\n3. Pergunta 1 da seção 06: algum token que já existe serve? Compare o Uso da proposta com o uso dos existentes. Trocar a referência de um token da Semântica muda o projeto todo; o que vale só para um lugar é Específico.\n4. Pergunta 2: a necessidade é só deste projeto? Se o projeto todo quer outro valor para um token que já existe, o caminho é trocar a referência na Semântica, não criar Específico (seção 07, itens 8 e 9). Se o pedido é \"para o futuro\", sem tela que precise dele, não se cria (item 13). O que fica fora dos tokens (ilustração, foto, logo de terceiros, desenho dos ícones) não vira Específico.\n   Pergunta 3: a mesma necessidade aparece em 3 ou mais projetos (contando este) na lista de aprovados, mesmo com outro nome? Se sim, é caso de promoção à Semântica.\n5. Pergunta 4: se alguma checagem diz que o valor não existe na Base, a Base precisa mudar antes, e isso fica fora deste fluxo.\n6. Nome: propriedade, papel e, se precisar, ênfase ou estado. A palavra nova descreve o uso, nunca a aparência, o componente ou o nome do projeto.\n7. Uso e Não usar dizem o papel na interface, nunca o componente.\n8. Se não der para saber com estes dados, escreva \"não dá para saber com estes dados\".\n\n## Dados\n{{ $json.contexto_ia }}\n\n## Documentação oficial do laboratório\n{{ $('Resumir documentação').first().json.documentacao }}\n\n## Formato\nTexto simples, sem markdown: sem #, sem asteriscos, sem tabelas. Uma linha por item, nesta ordem:\nRESUMO: uma frase.\nPERGUNTA 1: o token que serve e por quê, ou \"nenhum serve\" e por quê.\nPERGUNTA 2: é só deste projeto, ou é troca de referência na Semântica.\nPERGUNTA 3: repetição em outros projetos.\nNOME: ok, ou o que mudar.\nDESCRIÇÃO: ok, ou o que mudar em Uso e Não usar.\nNECESSIDADE: uma frase com a necessidade, para o registro.\nRECOMENDACAO: aprovar, ajustar ou recusar (uma palavra só)",
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.9,
+      "position": [
+        832,
+        -80
+      ],
+      "id": "d440d3db-c8d4-4af0-bb5a-db0669a4241f",
+      "name": "Parecer"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Monta a linha do registro com a decisão da lead. O e-mail já guarda a decisão, então não sai documento para o Drive.\nconst c = $('Conferir regras').first().json;\nconst p = c.proposta;\nconst parecer = $('Parecer').first().json.text || '';\nconst decisao = $('Esperar decisão').first().json; // respostas do formulário da lead\nconst aprovado = decisao['Decisão'] === 'Aprovar';\nconst recado = String(decisao['Feedback'] || '').trim();\nconst hoje = new Date().toLocaleDateString('sv-SE', { timeZone: 'America/Fortaleza' }).replaceAll('-', '.'); // AAAA.MM.DD, como as versões (seção 08)\nconst pegar = rotulo => ((parecer.match(new RegExp(rotulo + ':\\\\s*(.+)', 'i')) || [])[1] || '').trim();\nconst recomendacao = (pegar('RECOMENDACAO').match(/aprovar|ajustar|recusar/i) || ['?'])[0].toLowerCase();\nconst necessidade = pegar('NECESSIDADE') || p.porque;\n\nreturn [{ json: {\n  linha: {\n    data: hoje,\n    projeto: p.projeto,\n    token: p.nome,\n    uso: p.uso,\n    necessidade,\n    claro: p.claro,\n    escuro: p.escuro,\n    falhas: c.falhas,\n    alertas: c.alertas,\n    recomendacao_ia: recomendacao,\n    decisao: aprovado ? 'aprovado' : 'recusado',\n    minutos_ate_decisao: Math.round((Date.now() - new Date($('Ler tokens').first().json.inicio)) / 60000),\n    parecer,\n    observacao: recado,\n  },\n} }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1888,
+        -80
+      ],
+      "id": "5502db66-e59d-429d-8a4b-7690b31beb6d",
+      "name": "Montar registro"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Monta o e-mail para a lead decidir em poucos segundos: o veredito primeiro, o que fazer em seguida,\n// o que precisa de correção, o que passou e o parecer em perguntas e respostas. O e-mail é o registro.\nconst c = $('Conferir regras').first().json;\nconst p = c.proposta;\nconst parecer = $('Parecer').first().json.text || '';\nconst pegar = rotulo => ((parecer.match(new RegExp(rotulo + ':\\\\s*(.+)', 'i')) || [])[1] || '').trim();\nconst recomendacao = (pegar('RECOMENDACAO').match(/aprovar|ajustar|recusar/i) || ['?'])[0].toLowerCase();\nconst esc = s => String(s ?? '').replace(/[&<>]/g, x => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[x]);\n// Nomes de token (ex.: brand-1/600, text/on-action-primary) em azul e negrito, para achar rápido\nconst tk = s => esc(s).replace(/\\b[a-z][a-z0-9-]*(?:\\/[a-z0-9_.-]+)+/gi, m => `<b style=\"color:#1d4ed8\">${m}</b>`);\nconst falhas = c.checagens.filter(x => x.resultado === 'falha');\nconst alertas = c.checagens.filter(x => x.resultado === 'alerta');\nconst passaram = c.checagens.filter(x => x.resultado === 'passa');\nconst quem = p.quemPropoe || 'quem propôs';\nconst total = c.checagens.length;\n\n// Veredito e próximo passo, em linguagem direta\nconst veredito = {\n  aprovar: { cor: '#1b7f3b', titulo: 'Pode aprovar', frase: `As ${total} checagens passaram e nenhum token que já existe faz o mesmo papel.`, acao: `Clique em Decidir e escolha Aprovar. ${quem} recebe os próximos passos por e-mail.` },\n  ajustar: { cor: '#9a6700', titulo: 'Precisa de ajuste', frase: `${falhas.length} de ${total} checagens falharam e ${alertas.length} pedem atenção.`, acao: `Clique em Decidir e escolha Reprovar. ${quem} recebe por e-mail o que corrigir; use o recado para orientar.` },\n  recusar: { cor: '#b42318', titulo: 'Recomendo recusar', frase: `${falhas.length} de totalchecagensfalharam{pegar('PERGUNTA 1') && !/nenhum/i.test(pegar('PERGUNTA 1')) ? ', e um token que já existe parece servir' : ''}.`, acao: `Clique em Decidir, escolha Reprovar e explique o motivo no recado. O parecer abaixo ajuda.` },\n}[recomendacao] || { cor: '#444', titulo: 'Sem recomendação', frase: 'A IA não deu uma recomendação clara.', acao: 'Leia o parecer e decida.' };\n\n// O botão abre o formulário do nó Esperar decisão, onde a lead escolhe e deixa um recado\nconst formulario = $execution.resumeFormUrl;\nconst css = 'text-align:left;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.5;color:#1e1e1e;max-width:560px';\nconst titulo = t => `<p style=\"margin:18px 0 6px;font-size:13px;color:#555;text-transform:uppercase;letter-spacing:.04em\"><b>${t}</b></p>`;\nconst item = x => `<li style=\"margin:0 0 4px\"><b>${esc(x.teste)}:</b> ${tk(x.detalhe)}</li>`;\nconst pergunta = (q, r) => r ? `<p style=\"margin:0 0 8px\"><b>${q}</b><br>${tk(r)}</p>` : '';\n\nconst email_html = `<div style=\"${css}\">\n<p style=\"margin:0 0 4px;font-size:18px;color:${veredito.cor}\"><b>${veredito.titulo}</b></p>\n<p style=\"margin:0 0 12px\">${esc(veredito.frase)}</p>\n<p style=\"margin:0 0 12px;padding:10px 12px;background:#f4f5f7;border-left:3px solid ${veredito.cor}\"><b>O que fazer:</b> ${esc(veredito.acao)}</p>\n\n${titulo('O pedido')}\n<p style=\"margin:0 0 4px\"><b style=\"color:#1d4ed8\">${esc(p.nome)}</b> · ${esc(p.projeto)} · proposto por ${esc(quem)}</p>\n<p style=\"margin:0 0 4px\"><b>Para que serve:</b> ${esc(p.uso) || 'não informado'}</p>\n<p style=\"margin:0 0 4px\"><b>Por que nenhum token serve, segundo quem propôs:</b> ${tk(p.porque)}</p>\n<p style=\"margin:0 0 4px\"><b>Aponta para:</b> ${tk(p.claro || 'nada')} no claro · ${tk(p.escuro || 'nada')} no escuro</p>\n\n${falhas.length ? titulo(`Precisa corrigir (${falhas.length})`) + `<ul style=\"margin:0;padding-left:18px\">${falhas.map(item).join('')}</ul>` : ''}\n${alertas.length ? titulo(`Vale conferir (${alertas.length})`) + `<ul style=\"margin:0;padding-left:18px\">${alertas.map(item).join('')}</ul>` : ''}\n${titulo(`Passou (${passaram.length})`)}\n<p style=\"margin:0;color:#555\">${passaram.map(x => esc(x.teste)).join(' · ') || 'nenhuma checagem'}</p>\n\n${titulo('Parecer da IA')}\n${pergunta('Algum token que já existe resolve?', pegar('PERGUNTA 1'))}\n${pergunta('A necessidade é só deste projeto?', pegar('PERGUNTA 2'))}\n${pergunta('A mesma necessidade já apareceu em 3 ou mais projetos?', pegar('PERGUNTA 3'))}\n${pergunta('O nome segue a regra?', pegar('NOME'))}\n${pergunta('A descrição está completa?', pegar('DESCRIÇÃO') || pegar('DESCRICAO'))}\n<a href=\"${formulario}\" style=\"display:block;margin:20px 0 0;text-align:center;padding:12px 0;background:#2f9e58;color:#fff;text-decoration:none;border-radius:6px;font-weight:bold\">Decidir e deixar recado</a>\n<p style=\"margin:16px 0 0;font-size:12px;color:#777\">A decisão e o recado ficam na tabela registro_propostas, e quem propôs recebe o resultado por e-mail.</p>\n</div>`;\n\n// Versão em texto, caso o Gmail mostre as tags em vez do layout\nconst email_texto = [\n  `${veredito.titulo.toUpperCase()}: ${veredito.frase}`,\n  `O que fazer: ${veredito.acao}`,\n  '',\n  `O pedido: ${p.nome} · ${p.projeto} · proposto por ${quem}`,\n  `Para que serve: ${p.uso || 'não informado'}`,\n  `Aponta para: ${p.claro || 'nada'} no claro · ${p.escuro || 'nada'} no escuro`,\n  '',\n  falhas.length ? `Precisa corrigir:\\n${falhas.map(x => `- ${x.teste}: ${x.detalhe}`).join('\\n')}` : '',\n  alertas.length ? `Vale conferir:\\n${alertas.map(x => `- ${x.teste}: ${x.detalhe}`).join('\\n')}` : '',\n  `Passou: ${passaram.map(x => x.teste).join(' · ')}`,\n  '',\n  `Algum token que já existe resolve? ${pegar('PERGUNTA 1')}`,\n  `É só deste projeto? ${pegar('PERGUNTA 2')}`,\n  `Já apareceu em 3 ou mais projetos? ${pegar('PERGUNTA 3')}`,\n  '',\n  `Decidir: ${formulario}`,\n].filter(l => l !== '').join('\\n');\n\nconst assunto = `Validação de token: ${p.nome} · ${p.projeto} · ${veredito.titulo}`;\nreturn [{ json: { email_html, email_texto, assunto } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1200,
+        -80
+      ],
+      "id": "8db7bf50-85d9-4dba-babb-2ebde90d02b2",
+      "name": "Montar e-mail"
+    },
+    {
+      "parameters": {
+        "resume": "form",
+        "formTitle": "=Decisão sobre o token",
+        "formDescription": "=Escolha o resultado. Quem propôs recebe a resposta e os próximos passos por e-mail.",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "=Decisão",
+              "fieldType": "dropdown",
+              "fieldOptions": {
+                "values": [
+                  {
+                    "option": "=Aprovar"
+                  },
+                  {
+                    "option": "=Solicitar ajustes"
+                  }
+                ]
+              },
+              "requiredField": true
+            },
+            {
+              "fieldLabel": "=Feedback",
+              "fieldType": "textarea",
+              "placeholder": "Detalhe o motivo da decisão"
+            }
+          ]
+        },
+        "options": {
+          "respondWithOptions": {
+            "values": {
+              "formSubmittedText": "=Decisão registrada. Quem propôs já recebeu o resultado por e-mail."
+            }
+          }
+        }
+      },
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1.1,
+      "position": [
+        1632,
+        -80
+      ],
+      "id": "d91bb430-68d3-4abd-b634-a3840f89bec3",
+      "name": "Esperar decisão",
+      "webhookId": "36251dfb-1ea8-4cc3-a90c-5283bf14b278"
+    },
+    {
+      "parameters": {
+        "jsCode": "const APROVADOR = 'Jorge'; // nome de quem aprova, para a linha do Registro\n// Monta o e-mail de retorno para quem propôs: o resultado, o recado da lead e o que fazer em seguida.\nconst c = $('Conferir regras').first().json;\nconst p = c.proposta;\nconst para = String($('Ler tokens').first().json.pedido.emailPropoe || '').trim();\nif (!para) return []; // sem e-mail no pedido, não há para quem avisar\nconst linha = $('Montar registro').first().json.linha;\nconst aprovado = linha.decisao === 'aprovado';\nconst recado = linha.observacao;\nconst parecer = linha.parecer || '';\nconst pegar = rotulo => ((parecer.match(new RegExp(rotulo + ':\\\\s*(.+)', 'i')) || [])[1] || '').trim();\nconst esc = s => String(s ?? '').replace(/[&<>]/g, x => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' })[x]);\nconst tk = s => esc(s).replace(/\\b[a-z][a-z0-9-]*(?:\\/[a-z0-9_.-]+)+/gi, m => `<b style=\"color:#1d4ed8\">${m}</b>`);\nconst nome = (p.quemPropoe || '').split(' ')[0];\n\n// Seção 05: na cor, \"claro | escuro\"; na medida, a referência com px e rem (border-width só em px); no peso, o nome junto\nconst ehCor = /^#/.test(String(c.valores.claro));\nconst medida = (ref, v) => {\n  if (p.nome.startsWith('border-width/')) return `ref({String(v).replace('.', ',')} px)`;\n  if (p.nome.startsWith('opacity/') || /font-weight/.test(p.nome)) return `ref({v})`;\n  return `ref({String(v).replace('.', ',')} px · ${String(+(v / 16).toFixed(4)).replace('.', ',')} rem)`;\n};\nconst linhaValor = ehCor || typeof c.valores.claro !== 'number'\n  ? `${p.claro} | ${p.escuro}`\n  : p.claro === p.escuro ? medida(p.claro, c.valores.claro) : `${medida(p.claro, c.valores.claro)} | ${medida(p.escuro, c.valores.escuro)}`;\nconst descricao = [\n  `Uso: ${p.uso}`, `Não usar: ${p.naoUsar}`, `Par: ${p.par.join(', ') || '—'}`,\n  `Flexibilidade: ${p.flexibilidade || '—'}`, 'Situação: Em uso', `Valor: ${linhaValor}`,\n].join('\\n');\nconst registro = `${p.projeto} · ${p.nome} · ${p.uso} · ${linha.necessidade} · ${linha.data} · ${APROVADOR} · Em uso`;\nconst falhas = c.checagens.filter(x => x.resultado === 'falha');\nconst alertas = c.checagens.filter(x => x.resultado === 'alerta');\n\nconst cor = aprovado ? '#1b7f3b' : '#b42318';\nconst titulo = aprovado ? 'Seu token foi aprovado' : 'Seu token precisa de ajuste';\nconst frase = aprovado\n  ? `${p.nome} pode entrar em uso no ${p.projeto}. Faltam três passos para fechar.`\n  : `${p.nome} ainda não pode ser usado. Corrija os pontos abaixo e envie de novo pelo plugin.`;\nconst css = 'text-align:left;font-family:Arial,Helvetica,sans-serif;font-size:14px;line-height:1.5;color:#1e1e1e;max-width:560px';\nconst sub = t => `<p style=\"margin:18px 0 6px;font-size:13px;color:#555;text-transform:uppercase;letter-spacing:.04em\"><b>${t}</b></p>`;\nconst bloco = t => `<pre style=\"margin:0 0 4px;padding:10px 12px;background:#f4f5f7;border-radius:6px;font-family:Consolas,monospace;font-size:13px;white-space:pre-wrap\">${esc(t)}</pre>`;\nconst item = x => `<li style=\"margin:0 0 4px\"><b>${esc(x.teste)}:</b> ${tk(x.detalhe)}</li>`;\nconst pergunta = (q, r) => r && !/^ok\\.?$/i.test(r) ? `<p style=\"margin:0 0 8px\"><b>q</b><br>{tk(r)}</p>` : '';\n\nconst passos = aprovado\n  ? `${sub('O que fazer agora')}\n<p style=\"margin:0 0 6px\"><b>1. No Figma, troque a descrição da variável por esta:</b></p>${bloco(descricao)}\n<p style=\"margin:12px 0 6px\"><b>2. Registre esta linha em Específicos aprovados, no quadro Registro:</b></p>${bloco(registro)}\n<p style=\"margin:12px 0 0\"><b>3. Avise quem cuida do front-end</b> que o token entrou, para ele levar ao código.</p>`\n  : `${falhas.length ? sub(`Precisa corrigir (${falhas.length})`) + `<ul style=\"margin:0;padding-left:18px\">${falhas.map(item).join('')}</ul>` : ''}\n${alertas.length ? sub(`Vale conferir (${alertas.length})`) + `<ul style=\"margin:0;padding-left:18px\">${alertas.map(item).join('')}</ul>` : ''}\n${sub('Por que, segundo o parecer')}\n${pergunta('Algum token que já existe resolve?', pegar('PERGUNTA 1'))}\n${pergunta('A necessidade é só deste projeto?', pegar('PERGUNTA 2'))}\n${pergunta('O nome segue a regra?', pegar('NOME'))}\n${pergunta('A descrição está completa?', pegar('DESCRIÇÃO') || pegar('DESCRICAO'))}\n${sub('O que fazer agora')}\n<p style=\"margin:0\">Ajuste a variável no Figma, mantenha a Situação como Proposto e envie de novo pela aba Validar do plugin.${pegar('PERGUNTA 1') && !/nenhum/i.test(pegar('PERGUNTA 1')) ? ' Se um token que já existe serve, use ele e não precisa reenviar.' : ''}</p>`;\n\nconst email_html = `<div style=\"${css}\">\n<p style=\"margin:0 0 4px;font-size:18px;color:${cor}\"><b>${titulo}</b></p>\n<p style=\"margin:0 0 12px\">${nome ? esc(nome) + ', ' : ''}${tk(frase)}</p>\n${recado ? `<p style=\"margin:0 0 12px;padding:10px 12px;background:#f4f5f7;border-left:3px solid ${cor}\"><b>Recado da lead:</b> ${esc(recado)}</p>` : ''}\n${passos}\n<p style=\"margin:16px 0 0;font-size:12px;color:#777\">Proposta: ${esc(p.nome)} · ${esc(p.projeto)} · enviada em ${esc(p.data || linha.data)}</p>\n</div>`;\n\nconst assunto = `${aprovado ? 'Token aprovado' : 'Token precisa de ajuste'}: ${p.nome} · ${p.projeto}`;\nreturn [{ json: { para, assunto, email_html } }];"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2576,
+        -80
+      ],
+      "id": "f591fe20-7650-4036-b1ac-9c65e07905cc",
+      "name": "Montar retorno"
+    },
+    {
+      "parameters": {
+        "sendTo": "={{ $json.para }}",
+        "subject": "={{ $json.assunto }}",
+        "message": "={{ $json.email_html }}",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.gmail",
+      "typeVersion": 2.2,
+      "position": [
+        2800,
+        -80
+      ],
+      "id": "20f0107c-0010-4dd3-aff9-08a486df07a3",
+      "name": "Send a message",
+      "webhookId": "fa0d9fe6-8790-4688-ab19-35dfa089dba3",
+      "credentials": {
+        "gmailOAuth2": {
+          "id": "SUA_CREDENCIAL",
+          "name": "Gmail account"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "Parecer",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Aprovação": {
+      "main": [
+        [
+          {
+            "node": "Esperar decisão",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Medir": {
+      "main": [
+        [
+          {
+            "node": "Data table",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Data table": {
+      "main": [
+        [
+          {
+            "node": "Montar retorno",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Receber do plugin": {
+      "main": [
+        [
+          {
+            "node": "Ler tokens",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ler tokens": {
+      "main": [
+        [
+          {
+            "node": "Ler documentação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Resumir documentação": {
+      "main": [
+        [
+          {
+            "node": "Buscar registro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Ler documentação": {
+      "main": [
+        [
+          {
+            "node": "Resumir documentação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Buscar registro": {
+      "main": [
+        [
+          {
+            "node": "Conferir regras",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Conferir regras": {
+      "main": [
+        [
+          {
+            "node": "Parecer",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Parecer": {
+      "main": [
+        [
+          {
+            "node": "Montar e-mail",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Montar registro": {
+      "main": [
+        [
+          {
+            "node": "Medir",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Montar e-mail": {
+      "main": [
+        [
+          {
+            "node": "Aprovação",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Esperar decisão": {
+      "main": [
+        [
+          {
+            "node": "Montar registro",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Montar retorno": {
+      "main": [
+        [
+          {
+            "node": "Send a message",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "pinData": {},
+  "meta": {
+    "templateCredsSetupCompleted": true
+  },
+  "name": "Tokens – validar token específico"
+}

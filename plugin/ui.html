@@ -1,0 +1,565 @@
+<link rel="stylesheet" href="https://api.fontshare.com/v2/css?f[]=satoshi@400,500,700&display=swap">
+<style>
+  /* Tokens do design (arquivo Portfólio): nomes iguais aos do Figma */
+  :root {
+    --background-canvas: #ffffff;
+    --background-surface: #fafafa;
+    --background-action-primary: #9246d7;
+    --background-action-primary-hover: #7d34bc;
+    --text-primary: #1a1a1a;
+    --text-secondary: #404040;
+    --text-placeholder: #535353;
+    --text-link: #7d34bc;
+    --text-on-action-primary: #ffffff;
+    --text-danger: #b42318;
+    --text-success: #1b7f3b;
+    --border-strong: #727272;
+    --border-subtle: #e5e5e5;
+    --border-selected: #9246d7;
+    --border-focus: #9246d7;
+    --border-danger: #b42318;
+    --border-width-default: 1px;
+    --border-width-selected: 2px;
+    --border-width-focus: 2px;
+    --radius-x-small: 8px;
+    --radius-small: 12px;
+    --space-xx-small: 8px;
+    --space-x-small: 8px;
+    --space-small: 12px;
+    --space-medium: 16px;
+    --space-medium-l: 24px;
+    --space-large: 32px;
+    --fonte: 'Satoshi', 'Satoshi Variable', Inter, system-ui, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; background: var(--background-canvas); }
+  body { font-family: var(--fonte); color: var(--text-primary); font-size: 16px; line-height: 24px; -webkit-font-smoothing: antialiased; }
+  .pagina { display: flex; flex-direction: column; gap: var(--space-large); padding: 40px 40px 0; }
+
+  /* Cabeçalho */
+  .marca { display: flex; flex-direction: column; gap: 12px; }
+  .marca svg { display: block; width: 83px; height: 19px; }
+  .marca h1 { margin: 0; font-size: 24px; line-height: 1.3; font-weight: 500; }
+  .arquivo { margin: 4px 0 0; font-size: 14px; line-height: 20px; color: var(--text-secondary); }
+
+  /* Abas */
+  .abas { display: flex; gap: var(--space-x-small); border-bottom: 1px solid var(--border-subtle); }
+  .aba { background: none; border: 0; border-bottom: var(--border-width-selected) solid transparent; margin-bottom: -1px; padding: var(--space-small) var(--space-medium); font: 500 14px/20px var(--fonte); color: var(--text-secondary); cursor: pointer; border-radius: 0; }
+  .aba:hover { color: var(--text-primary); background: var(--background-surface); }
+  .aba.ativa { color: var(--text-primary); border-bottom-color: var(--border-selected); }
+
+  /* Blocos e textos */
+  .bloco { display: flex; flex-direction: column; gap: var(--space-medium-l); }
+  .bloco + .bloco { margin-top: var(--space-large); }
+  h2 { margin: 0; font-size: 20px; line-height: 28px; font-weight: 700; }
+  h3 { margin: 0; font-size: 14px; line-height: 20px; font-weight: 700; }
+  .intro { display: flex; flex-direction: column; gap: var(--space-xx-small); }
+  .nota { margin: 0; font-size: 14px; line-height: 20px; color: var(--text-secondary); }
+  .oculto { display: none !important; }
+
+  /* Campo de texto */
+  .campo { display: flex; flex-direction: column; gap: var(--space-x-small); }
+  .campo > label { font-size: 14px; line-height: 20px; font-weight: 500; }
+  .campo .ajuda { margin: 0; font-size: 14px; line-height: 20px; color: var(--text-secondary); }
+  input, textarea, .select-botao {
+    width: 100%; padding: var(--space-small); font: 400 16px/24px var(--fonte); color: var(--text-primary);
+    background: var(--background-canvas); border: var(--border-width-default) solid var(--border-strong); border-radius: var(--radius-x-small);
+  }
+  input::placeholder, textarea::placeholder { color: var(--text-placeholder); opacity: 1; }
+  textarea { min-height: 96px; resize: vertical; }
+  input:focus-visible, textarea:focus-visible, .select-botao:focus-visible {
+    outline: none; border-color: var(--border-focus); box-shadow: 0 0 0 1px var(--border-focus);
+  }
+
+  /* Select: botão + lista no estilo do design. O select nativo continua guardando o valor. */
+  .select { position: relative; }
+  .select > select { position: absolute; opacity: 0; pointer-events: none; width: 1px; height: 1px; }
+  .select-botao { display: flex; align-items: center; justify-content: space-between; gap: var(--space-x-small); text-align: left; cursor: pointer; }
+  .select-botao svg { flex: none; width: 24px; height: 24px; }
+  .select-botao .recolher { display: none; }
+  .select.aberto .select-botao .abrir { display: none; }
+  .select.aberto .select-botao .recolher { display: block; }
+  .select-lista { display: none; margin: var(--space-xx-small) 0 0; padding: 0; list-style: none; background: var(--background-canvas); border: 1px solid var(--border-strong); border-radius: var(--radius-x-small); overflow: hidden; }
+  .select.aberto .select-lista { display: block; }
+  .select-lista li { min-height: 44px; padding: var(--space-small); font: 500 14px/20px var(--fonte); color: var(--text-primary); cursor: pointer; }
+  .select-lista li:hover, .select-lista li.foco { background: var(--background-surface); }
+  .select-lista li[aria-selected="true"] { background: var(--background-surface); color: var(--text-link); }
+
+  /* Botões */
+  button { font-family: var(--fonte); }
+  .botao { display: flex; align-items: center; justify-content: center; gap: var(--space-x-small); width: 100%; min-height: 48px; padding: var(--space-x-small) var(--space-medium); border: 0; border-radius: var(--radius-x-small); font: 500 14px/20px var(--fonte); cursor: pointer; }
+  .botao:focus-visible, .aba:focus-visible, .modos button:focus-visible { outline: var(--border-width-focus) solid var(--border-focus); outline-offset: 2px; }
+  .primario { background: var(--background-action-primary); color: var(--text-on-action-primary); }
+  .primario:hover { background: var(--background-action-primary-hover); }
+  .secundario { background: var(--background-canvas); color: var(--text-link); border: 1px solid var(--border-selected); }
+  .secundario:hover { background: var(--background-surface); }
+  .terciario { background: none; color: var(--text-primary); min-height: 40px; }
+  .terciario:hover { background: var(--background-surface); }
+  .perigo { background: var(--background-canvas); color: var(--text-danger); border: 1px solid var(--border-danger); }
+  .botao:disabled { opacity: .4; cursor: not-allowed; }
+
+  /* Rodapé fixo: a ação principal fica sempre à vista; o gradiente avisa que há mais conteúdo */
+  .rodape { position: sticky; bottom: 0; padding: 32px 40px 24px; background: linear-gradient(to top, #fff 60%, rgba(255,255,255,0)); display: flex; flex-direction: column; gap: var(--space-x-small); }
+  #status:empty, #pvErros:empty { display: none; }
+  #status { white-space: pre-wrap; font-size: 14px; line-height: 20px; color: var(--text-primary); background: var(--background-surface); border-left: 3px solid var(--border-selected); border-radius: 4px; padding: var(--space-small); }
+
+  /* Cartões auxiliares */
+  .cartao-aux { display: flex; flex-direction: column; gap: var(--space-medium); padding: var(--space-medium-l); background: var(--background-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-small); }
+  details.cartao-aux { gap: 0; }
+  details.cartao-aux[open] > summary { margin-bottom: var(--space-medium); }
+  summary { cursor: pointer; font: 500 14px/20px var(--fonte); }
+  summary:focus-visible { outline: var(--border-width-focus) solid var(--border-focus); outline-offset: 2px; }
+  .configuracao { margin: 0 40px var(--space-large); }
+  .configuracao .campo + .campo, .configuracao .campo + .botao { margin-top: var(--space-medium); }
+
+  /* ---------- Prévia ---------- */
+  .chips { display: flex; flex-wrap: wrap; gap: var(--space-xx-small); }
+  .chip { background: var(--background-surface); border: 1px solid var(--border-subtle); border-radius: 999px; padding: 4px 12px; font: 500 12px/16px var(--fonte); }
+  .chip.alerta { background: #fdecec; border-color: #f4c7c3; color: var(--text-danger); }
+  .erro { background: #fdecec; color: var(--text-danger); border-left: 3px solid var(--border-danger); border-radius: 4px; padding: var(--space-small); font-size: 14px; line-height: 20px; white-space: pre-wrap; }
+  .aviso { background: #fff6e0; color: #6b4e00; border-left: 3px solid #d29b00; border-radius: 4px; padding: var(--space-small); font-size: 14px; line-height: 20px; }
+  .secao { margin-top: var(--space-medium-l); display: flex; flex-direction: column; gap: var(--space-small); padding-top: var(--space-medium-l); border-top: 1px solid var(--border-subtle); }
+  .amostras { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-x-small); }
+  .amostra { border-radius: var(--radius-x-small); padding: var(--space-small); border: 1px solid var(--border-subtle); }
+  .amostra .aa { font-size: 18px; font-weight: 700; line-height: 24px; }
+  .amostra .info { font-size: 12px; line-height: 16px; }
+  .selo { display: inline-block; margin-top: var(--space-xx-small); font: 500 12px/16px var(--fonte); background: #fff; color: var(--text-success); border-radius: 999px; padding: 2px 8px; }
+  .selo.ruim { background: #fdecec; color: var(--text-danger); }
+  .cor { display: grid; grid-template-columns: 1fr auto auto; gap: var(--space-x-small); align-items: center; padding: var(--space-x-small) 0; border-bottom: 1px solid var(--border-subtle); font-size: 13px; line-height: 18px; }
+  .par { display: flex; align-items: center; gap: 2px; }
+  .sw { width: 20px; height: 20px; border-radius: 4px; border: 1px solid rgba(0,0,0,.12); }
+  .seta { color: var(--text-placeholder); font-size: 10px; margin: 0 2px; }
+  .modo { font-size: 11px; color: var(--text-secondary); margin-right: 4px; }
+  .medida { display: grid; grid-template-columns: 120px 1fr; gap: var(--space-x-small); align-items: center; padding: var(--space-x-small) 0; border-bottom: 1px solid var(--border-subtle); font-size: 13px; line-height: 18px; }
+  .linhas { display: flex; flex-direction: column; gap: 4px; }
+  .barra { height: 8px; border-radius: 2px; max-width: 100%; }
+  .antes { background: #c9c9c9; } .depois { background: var(--background-action-primary); }
+  .canto { width: 32px; height: 32px; border: 2px solid; display: inline-block; margin-right: var(--space-x-small); }
+  .legenda { font-size: 12px; line-height: 16px; color: var(--text-secondary); }
+  .voltar { background: none; border: 0; padding: 4px 0; margin: 0 0 var(--space-medium); font: 500 14px/20px var(--fonte); color: var(--text-link); cursor: pointer; }
+  .voltar:hover { text-decoration: underline; }
+  .voltar:focus-visible { outline: var(--border-width-focus) solid var(--border-focus); outline-offset: 2px; }
+  .botoes { display: flex; gap: var(--space-x-small); }
+  ul { margin: 0; padding-left: 20px; font-size: 14px; line-height: 20px; }
+  .modos { display: inline-flex; padding: 4px; gap: 4px; background: var(--background-surface); border: 1px solid var(--border-subtle); border-radius: var(--radius-x-small); align-self: flex-start; }
+  .modos button { padding: 6px 16px; border: 0; background: none; border-radius: 6px; cursor: pointer; font: 500 14px/20px var(--fonte); color: var(--text-secondary); }
+  .modos button.ativa { background: var(--background-canvas); color: var(--text-primary); box-shadow: 0 1px 2px rgba(0,0,0,.12); }
+  .lado { display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-x-small); }
+  .palco { border-radius: var(--radius-x-small); padding: var(--space-small); overflow: hidden; border: 1px solid var(--border-subtle); }
+  .palco .rot { font: 500 12px/16px var(--fonte); margin-bottom: var(--space-x-small); opacity: .75; }
+  .cartao { zoom: .58; width: 300px; box-sizing: border-box; }
+</style>
+
+<div class="pagina">
+  <header class="marca">
+    <svg viewBox="0 0 83 19" aria-label="Vortex" role="img"><path d="M11.7205 14.2109V15.5646L5.85955 18.948L0 15.5646V14.2109L5.86025 17.5944L11.7205 14.2109Z" fill="#9246D7"/>
+<path d="M5.86025 1.35366L0 4.7371V3.38345L5.86025 0L11.7205 3.38345V4.7371L5.86025 1.35366Z" fill="#9246D7"/>
+<path d="M5.85955 12.1805L8.20463 10.8276V5.41365L5.86025 4.06069L1.17219 6.76731V13.5342L0 12.8574V6.09048L5.86025 2.70703L9.37612 4.73752V11.5044L5.86025 13.5342L4.68806 12.8574V8.79709L5.85885 8.11956L5.86025 6.76731L3.51587 8.12026V13.5342L5.86025 14.8872L10.5483 12.1805V5.41365L11.7205 6.09048V12.8574L5.86025 16.2408L2.34438 14.211V7.44414L5.85955 5.41365L7.03244 6.09048V10.1508L5.86025 10.8276L5.85955 12.1805Z" fill="#9246D7"/>
+<path d="M21.3988 10.4553H21.5144L23.0152 5.72166C23.0615 5.54859 23.1883 5.43299 23.4195 5.43299H24.6891C24.8292 5.43299 24.9203 5.54859 24.8621 5.72166L22.2648 13.2256C22.2426 13.3138 22.1897 13.3913 22.1157 13.4442C22.0416 13.497 21.9512 13.5219 21.8606 13.5143H21.0527C20.9621 13.5217 20.8717 13.4968 20.7977 13.444C20.7237 13.3911 20.6708 13.3138 20.6484 13.2256L18.0511 5.72166C17.993 5.54859 18.0742 5.43299 18.2242 5.43299H19.4938C19.5845 5.42538 19.675 5.45021 19.7492 5.50307C19.8233 5.55593 19.8763 5.63339 19.8987 5.72166L21.3988 10.4553Z" fill="#9246D7"/>
+<path d="M36.4338 11.8421C36.4338 13.0543 35.8564 13.6316 34.6443 13.6316H31.8095C30.5974 13.6316 30.02 13.0543 30.02 11.8421V7.10782C30.02 5.8957 30.5974 5.31836 31.8095 5.31836H34.638C35.8501 5.31836 36.4275 5.8957 36.4275 7.10782L36.4338 11.8421ZM34.7018 7.45535C34.7018 7.10852 34.4713 6.87801 34.1251 6.87801H32.3322C31.9853 6.87801 31.7548 7.10852 31.7548 7.45535V11.496C31.7548 11.8421 31.9853 12.0733 32.3322 12.0733H34.1216C34.4678 12.0733 34.6983 11.8421 34.6983 11.496L34.7018 7.45535Z" fill="#9246D7"/>
+<path d="M47.6287 10.8613L48.7834 13.2274C48.8001 13.2573 48.8085 13.2909 48.808 13.3251C48.8075 13.3592 48.798 13.3926 48.7804 13.4219C48.7629 13.4511 48.7379 13.4753 48.708 13.4918C48.6782 13.5084 48.6445 13.5168 48.6103 13.5161H47.3639C47.1103 13.5161 47.0178 13.4012 46.9365 13.2274L45.8974 10.9763H44.3959V13.2274C44.3984 13.266 44.3926 13.3046 44.379 13.3408C44.3654 13.3769 44.3442 13.4097 44.3169 13.437C44.2895 13.4644 44.2567 13.4855 44.2206 13.4992C44.1844 13.5128 44.1458 13.5186 44.1073 13.5161H42.9533C42.9147 13.5186 42.8761 13.5128 42.84 13.4992C42.8038 13.4855 42.771 13.4644 42.7437 13.437C42.7164 13.4097 42.6952 13.3769 42.6816 13.3408C42.6679 13.3046 42.6621 13.266 42.6646 13.2274V5.72277C42.6623 5.68425 42.6681 5.64567 42.6818 5.60958C42.6955 5.57349 42.7167 5.54071 42.7439 5.51342C42.7712 5.48613 42.804 5.46495 42.8401 5.45128C42.8762 5.4376 42.9148 5.43175 42.9533 5.4341H46.9358C48.1479 5.4341 48.7253 6.01144 48.7253 7.22357V9.18539C48.7253 10.745 47.6287 10.8613 47.6287 10.8613ZM44.3959 6.99375V9.418H46.4166C46.7627 9.418 46.9939 9.18679 46.9939 8.84067V7.56829C46.9939 7.22216 46.7627 6.99165 46.4166 6.99165L44.3959 6.99375Z" fill="#9246D7"/>
+<path d="M57.996 13.2262C57.9984 13.2647 57.9925 13.3033 57.9789 13.3394C57.9652 13.3755 57.944 13.4083 57.9167 13.4355C57.8894 13.4628 57.8566 13.484 57.8206 13.4977C57.7845 13.5114 57.7459 13.5172 57.7074 13.5149H56.5527C56.5142 13.5172 56.4756 13.5114 56.4395 13.4977C56.4034 13.484 56.3706 13.4628 56.3433 13.4355C56.3161 13.4083 56.2949 13.3755 56.2812 13.3394C56.2675 13.3033 56.2617 13.2647 56.264 13.2262V6.9904H54.4171C54.3786 6.99275 54.34 6.9869 54.3039 6.97322C54.2678 6.95955 54.2351 6.93836 54.2078 6.91108C54.1805 6.88379 54.1593 6.85101 54.1456 6.81492C54.1319 6.77883 54.1261 6.74025 54.1284 6.70173V5.72082C54.1261 5.6823 54.1319 5.64371 54.1456 5.60762C54.1593 5.57153 54.1805 5.53876 54.2078 5.51147C54.2351 5.48418 54.2678 5.463 54.3039 5.44932C54.34 5.43565 54.3786 5.42979 54.4171 5.43215H59.843C59.8815 5.42979 59.9201 5.43565 59.9561 5.44932C59.9922 5.463 60.025 5.48418 60.0523 5.51147C60.0796 5.53876 60.1008 5.57153 60.1144 5.60762C60.1281 5.64371 60.134 5.6823 60.1316 5.72082V6.70173C60.134 6.74025 60.1281 6.77883 60.1144 6.81492C60.1008 6.85101 60.0796 6.88379 60.0523 6.91108C60.025 6.93836 59.9922 6.95955 59.9561 6.97322C59.9201 6.9869 59.8815 6.99275 59.843 6.9904H57.996V13.2262Z" fill="#9246D7"/>
+<path d="M67.4633 11.9572H71.1578C71.1964 11.9548 71.235 11.9607 71.271 11.9743C71.3071 11.988 71.3399 12.0092 71.3672 12.0365C71.3945 12.0638 71.4157 12.0966 71.4293 12.1326C71.443 12.1687 71.4489 12.2073 71.4465 12.2458V13.2267C71.4489 13.2653 71.443 13.3039 71.4293 13.3399C71.4157 13.376 71.3945 13.4088 71.3672 13.4361C71.3399 13.4634 71.3071 13.4846 71.271 13.4982C71.235 13.5119 71.1964 13.5178 71.1578 13.5154H66.0207C65.9821 13.5179 65.9435 13.5121 65.9073 13.4985C65.8712 13.4848 65.8384 13.4637 65.8111 13.4363C65.7838 13.409 65.7626 13.3762 65.7489 13.3401C65.7353 13.3039 65.7295 13.2653 65.732 13.2267V5.72277C65.7296 5.68425 65.7355 5.64567 65.7492 5.60958C65.7628 5.57349 65.784 5.54071 65.8113 5.51342C65.8386 5.48613 65.8714 5.46495 65.9075 5.45128C65.9436 5.4376 65.9821 5.43175 66.0207 5.4341H71.0422C71.0808 5.43175 71.1193 5.4376 71.1554 5.45128C71.1915 5.46495 71.2243 5.48613 71.2516 5.51342C71.2789 5.54071 71.3001 5.57349 71.3137 5.60958C71.3274 5.64567 71.3333 5.68425 71.3309 5.72277V6.70368C71.3333 6.7422 71.3274 6.78079 71.3137 6.81687C71.3001 6.85296 71.2789 6.88574 71.2516 6.91303C71.2243 6.94032 71.1915 6.9615 71.1554 6.97518C71.1193 6.98885 71.0808 6.9947 71.0422 6.99235H67.4633V8.60875H70.1769C70.2154 8.60641 70.2539 8.61225 70.2899 8.62588C70.326 8.63951 70.3587 8.66063 70.386 8.68784C70.4133 8.71506 70.4345 8.74774 70.4482 8.78375C70.4619 8.81975 70.4679 8.85826 70.4656 8.89672V9.87763C70.468 9.91616 70.4621 9.95474 70.4484 9.99083C70.4348 10.0269 70.4136 10.0597 70.3863 10.087C70.359 10.1143 70.3262 10.1355 70.2901 10.1491C70.254 10.1628 70.2155 10.1687 70.1769 10.1663H67.4633V11.9572Z" fill="#9246D7"/>
+<path d="M79.7338 7.85807L80.8303 5.72248C80.8701 5.63413 80.9352 5.55956 81.0174 5.50818C81.0996 5.4568 81.1952 5.43092 81.292 5.43381H82.5623C82.7354 5.43381 82.8278 5.54942 82.7354 5.72248L80.7735 9.24395L82.9666 13.2265C83.0591 13.4002 82.9442 13.5151 82.7935 13.5151H81.4623C81.3654 13.518 81.2699 13.4921 81.1877 13.4408C81.1055 13.3894 81.0404 13.3148 81.0006 13.2265L79.7338 10.6866H79.6182L78.3486 13.2265C78.3087 13.3149 78.2435 13.3896 78.1612 13.441C78.0789 13.4923 77.9831 13.5182 77.8862 13.5151H76.5591C76.419 13.5151 76.2936 13.4002 76.3854 13.2265L78.5791 9.24395L76.6173 5.72248C76.5136 5.54942 76.6173 5.43381 76.7903 5.43381H78.0606C78.1575 5.43092 78.253 5.4568 78.3352 5.50818C78.4174 5.55956 78.4825 5.63413 78.5223 5.72248L79.6189 7.85807H79.7338Z" fill="#9246D7"/></svg>
+    <h1>Tokens do Laboratório</h1>
+  </header>
+
+  <div>
+    <div class="abas" id="abas" role="tablist">
+      <button class="aba ativa" id="aba1" role="tab" aria-selected="true" aria-controls="painel1">Personalizar projeto</button>
+      <button class="aba" id="aba2" role="tab" aria-selected="false" aria-controls="painel2">Validar token específico</button>
+    </div>
+    <p class="arquivo" id="arquivo"></p>
+  </div>
+
+  <!-- Aba 1: personalizar projeto -->
+  <section id="painel1" role="tabpanel" aria-labelledby="aba1">
+    <div class="bloco">
+      <div class="intro">
+        <h2>Questionário de identidade</h2>
+        <p class="nota">Quando não souber, deixe em branco: o projeto fica com o padrão do laboratório.</p>
+      </div>
+      <div class="campo"><label for="q1">1. Nome do projeto</label><input id="q1" data-rotulo="Nome do projeto" placeholder="Digite o nome do projeto"></div>
+      <div class="campo"><label for="q2">2. Cor principal (brand-1)</label><input id="q2" data-rotulo="Cor principal (brand-1)" placeholder="#1A73E8 ou uma escala de cores"><p class="ajuda">Informe um hex ou as 11 cores de 50 a 950 (uicolors.app).</p></div>
+      <div class="campo"><label for="q3a">3. Cor brand-2</label><input id="q3a" data-rotulo="Cor brand-2" data-padrao="padrão" placeholder="padrão"><p class="ajuda">Informe um hex, uma escala de cores ou “não usa”.</p></div>
+      <div class="campo"><label for="q3b">3. Cor brand-3</label><input id="q3b" data-rotulo="Cor brand-3" data-padrao="padrão" placeholder="padrão"><p class="ajuda">Informe um hex, uma escala de cores ou “não usa”.</p></div>
+      <div class="campo"><label for="q3c">3. Cor brand-4</label><input id="q3c" data-rotulo="Cor brand-4" data-padrao="padrão" placeholder="padrão"><p class="ajuda">“Não usa” apaga a paleta e o destaque do mesmo número (accent-n).</p></div>
+      <div class="campo"><label for="q4">4. Neutro</label>
+        <select id="q4" data-rotulo="Neutro"><option value="padrão">Padrão</option><option value="mais quente">Mais quente</option><option value="mais frio">Mais frio</option><option value="paleta própria">Paleta própria</option></select></div>
+      <div class="campo"><label for="q4b">4. Paleta neutra própria</label><input id="q4b" data-rotulo="Paleta neutra própria" placeholder="11 cores de 50 a 950"><p class="ajuda">Preencha se escolher “Paleta própria”. neutral/0 continua branco e /1000 continua preto.</p></div>
+      <div class="campo"><label for="q5">5. Fonte dos títulos</label><input id="q5" data-rotulo="Fonte dos títulos" data-padrao="padrão" placeholder="padrão"></div>
+      <div class="campo"><label for="q5b">5. Pesos que a fonte dos títulos tem</label><input id="q5b" data-rotulo="Pesos da fonte dos títulos" placeholder="400, 600, 700"><p class="ajuda">Informe os pesos disponíveis na fonte dos títulos.</p></div>
+      <div class="campo"><label for="q6">6. Fonte do texto</label><input id="q6" data-rotulo="Fonte do texto" data-padrao="padrão" placeholder="padrão"></div>
+      <div class="campo"><label for="q6b">6. Pesos que a fonte do texto tem</label><input id="q6b" data-rotulo="Pesos da fonte do texto" placeholder="400, 500, 700"><p class="ajuda">Body usa 400; label, 500. Informe os pesos disponíveis.</p></div>
+      <div class="campo"><label for="q7">7. Peso dos títulos</label><input id="q7" data-rotulo="Peso dos títulos" data-padrao="padrão" placeholder="padrão"><p class="ajuda">Use um dos pesos disponíveis na fonte dos títulos.</p></div>
+      <div class="campo"><label for="q8">8. Densidade</label>
+        <select id="q8" data-rotulo="Densidade"><option value="padrão">Padrão</option><option value="compacta">Compacta</option><option value="arejada">Arejada</option></select></div>
+      <div class="campo"><label for="q9">9. Cantos</label>
+        <select id="q9" data-rotulo="Cantos"><option value="padrão">Padrão</option><option value="retos">Retos</option><option value="suaves">Suaves</option><option value="bem arredondados">Bem arredondados</option></select></div>
+      <div class="campo"><label for="q10">10. Bordas</label>
+        <select id="q10" data-rotulo="Bordas"><option value="padrão">Padrão</option><option value="finas">Finas</option><option value="grossas">Grossas</option></select></div>
+      <div class="campo"><label for="q11">11. Tamanho dos títulos de destaque</label>
+        <select id="q11" data-rotulo="Tamanho dos títulos de destaque"><option value="padrão">Padrão</option><option value="menores">Menores</option><option value="maiores">Maiores</option></select></div>
+      <div class="campo"><label for="q12">12. Página e superfícies</label>
+        <select id="q12" data-rotulo="Página e superfícies"><option value="padrão">Padrão</option><option value="página branca com superfície tingida">Página branca com superfície tingida</option><option value="página tingida com superfície branca">Página tingida com superfície branca</option></select></div>
+      <div class="campo"><label for="q13">13. O projeto tem gráficos?</label>
+        <select id="q13" data-rotulo="O projeto tem gráficos?"><option value="sim">Sim</option><option value="não">Não</option></select></div>
+    </div>
+
+    <div class="bloco">
+      <h2>Lista de projetos (seção 08)</h2>
+      <div class="campo"><label for="qv">Versão de origem</label><input id="qv" data-rotulo="Versão de origem" placeholder="Digite a versão de origem"></div>
+      <div class="campo"><label for="qd">Quem duplicou</label><input id="qd" data-rotulo="Quem duplicou" placeholder="Digite o nome de quem duplicou"></div>
+    </div>
+
+    <div class="bloco">
+      <div class="cartao-aux">
+        <div class="intro">
+          <h3>Já enviou? Abra a proposta</h3>
+          <p class="nota">Depois do envio, a prévia abre sozinha em cerca de 1 minuto. Nada muda no arquivo antes de você clicar em Aplicar.</p>
+        </div>
+        <div class="campo"><label for="pedido">Código do pedido</label><input id="pedido" placeholder="Aparece aqui depois do envio"></div>
+        <button class="botao secundario" id="verProposta">Ver proposta</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Aba 2: validar token específico -->
+  <section id="painel2" class="oculto" role="tabpanel" aria-labelledby="aba2">
+    <div class="bloco">
+      <div class="intro">
+        <h2>Token específico para validar</h2>
+        <p class="nota">Antes, passe pelas quatro perguntas da seção 06. Crie a variável na coleção specific, apontando para a Base nos dois modos, com o escopo do grupo e a descrição de seis rótulos (Uso, Não usar, Par, Flexibilidade, Situação: Proposto, Valor).</p>
+      </div>
+      <div class="campo"><label for="variavel">Variável</label><select id="variavel"></select></div>
+      <div class="campo"><label for="porque">Por que nenhum token serve</label><textarea id="porque" placeholder="Explique a necessidade e por que os tokens que já existem não atendem"></textarea></div>
+      <div class="campo"><label for="projeto">Projeto</label><input id="projeto" placeholder="Digite o nome do projeto"></div>
+      <div class="campo"><label for="quem">Quem propõe</label><input id="quem" placeholder="Digite o seu nome"></div>
+      <div class="campo"><label for="email">Seu e-mail</label><input id="email" type="email" placeholder="voce@exemplo.com"><p class="ajuda">A decisão da lead e os próximos passos chegam neste e-mail.</p></div>
+    </div>
+  </section>
+
+  <!-- Prévia da proposta -->
+  <section id="painel3" class="oculto" aria-live="polite">
+    <button class="voltar" id="voltar">← Voltar ao questionário</button>
+    <div class="bloco">
+      <div class="intro">
+        <h2 id="pvTitulo">Proposta</h2>
+        <p class="nota">Nada mudou ainda. Confira e decida.</p>
+      </div>
+      <div class="chips" id="pvChips"></div>
+      <div id="pvErros"></div>
+      <div class="bloco" id="pvConteudo" style="gap:0"></div>
+    </div>
+  </section>
+</div>
+
+<div class="rodape">
+  <div id="status" role="status"></div>
+  <button class="botao primario" id="enviar">Enviar formulário</button>
+  <div class="botoes oculto" id="botoesPrevia">
+    <button class="botao perigo" id="recusar">Recusar</button>
+    <button class="botao primario" id="aplicar">Aplicar no arquivo</button>
+  </div>
+</div>
+
+<details class="cartao-aux configuracao">
+  <summary>Endereços do n8n (configurar uma vez)</summary>
+  <div class="campo"><label for="url1">URL do fluxo de personalização</label><input id="url1" placeholder="https://….app.n8n.cloud/webhook/tokens-personalizar"></div>
+  <div class="campo"><label for="url2">URL do fluxo de validação</label><input id="url2" placeholder="https://….app.n8n.cloud/webhook/tokens-validar"></div>
+  <button class="botao secundario" id="salvar">Salvar endereços</button>
+</details>
+
+<script>
+  let aba = 1;
+  let pedidoAtual = '';
+  let planoAtual = null;
+  let previaAberta = 0;
+  let espera = null;
+  const $ = id => document.getElementById(id);
+  const status = t => ($('status').textContent = t);
+  const enviarAoPlugin = msg => parent.postMessage({ pluginMessage: msg }, '*');
+  const pl = (n, um, varios) => `${n} ${n === 1 ? um : varios}`;
+  const num = v => String(v).replace('.', ',');
+  const esc = s => String(s ?? '').replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[c]);
+
+  function mostrar(qual) {
+    aba = qual;
+    $('aba1').classList.toggle('ativa', qual === 1);
+    $('aba2').classList.toggle('ativa', qual === 2);
+    $('aba1').setAttribute('aria-selected', String(qual === 1));
+    $('aba2').setAttribute('aria-selected', String(qual === 2));
+    $('arquivo').classList.toggle('oculto', qual === 3);
+    $('botoesPrevia').classList.toggle('oculto', qual !== 3);
+        document.querySelector('.configuracao').classList.toggle('oculto', qual === 3);
+    $('enviar').textContent = qual === 2 ? 'Enviar para validação' : 'Enviar formulário';
+    window.scrollTo(0, 0);
+    $('painel1').classList.toggle('oculto', qual !== 1);
+    $('painel2').classList.toggle('oculto', qual !== 2);
+    $('painel3').classList.toggle('oculto', qual !== 3);
+    $('abas').parentElement.classList.toggle('oculto', qual === 3);
+    $('enviar').classList.toggle('oculto', qual === 3);
+  }
+  $('aba1').onclick = () => { mostrar(1); status(''); };
+  $('aba2').onclick = () => { mostrar(2); status(''); };
+  $('voltar').onclick = () => { mostrar(1); status(''); };
+
+  $('salvar').onclick = () => {
+    enviarAoPlugin({ tipo: 'salvarUrls', urls: { personalizar: $('url1').value.trim(), validar: $('url2').value.trim(), quem: $('quem').value.trim(), email: $('email').value.trim() } });
+    status('Endereços salvos.');
+  };
+
+  // Os endereços do workflow "Tokens – entregar plano" saem do endereço do fluxo 1, sempre na Production URL
+  const urlDe = caminho => $('url1').value.trim().replace('/webhook-test/', '/webhook/').replace(/tokens-personalizar\/?$/, caminho);
+
+  $('enviar').onclick = () => {
+    const url = aba === 1 ? $('url1').value.trim() : $('url2').value.trim();
+    if (!url) return status('Falta o endereço do n8n. Abra "Endereços do n8n" lá embaixo.');
+    if (aba === 1) {
+      const respostas = {};
+      document.querySelectorAll('#painel1 [data-rotulo]').forEach(el => (respostas[el.dataset.rotulo] = el.value.trim() || el.dataset.padrao || ''));
+      if (!respostas['Nome do projeto']) return status('Preencha o nome do projeto.');
+      pedidoAtual = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+      enviarAoPlugin({ tipo: 'coletar', acao: 'personalizar', respostas, pedidoId: pedidoAtual });
+    } else {
+      const pedido = { variavel: $('variavel').value, porque: $('porque').value.trim(), projeto: $('projeto').value.trim(), quemPropoe: $('quem').value.trim(), data: new Date().toLocaleDateString('sv-SE').replaceAll('-', '.') };
+      pedido.emailPropoe = $('email').value.trim();
+      if (!pedido.variavel) return status('Não achei variável na coleção specific deste arquivo.');
+      if (!/^\S+@\S+\.\S+$/.test(pedido.emailPropoe)) return status('Coloque o seu e-mail, para receber a decisão da lead.');
+      // Guarda nome e e-mail para a próxima vez
+      enviarAoPlugin({ tipo: 'salvarUrls', urls: { personalizar: $('url1').value.trim(), validar: $('url2').value.trim(), quem: pedido.quemPropoe, email: pedido.emailPropoe } });
+      if (pedido.porque.length < 10) return status('Explique por que nenhum token que já existe serve.');
+      enviarAoPlugin({ tipo: 'coletar', acao: 'validar', pedido });
+    }
+    status('Lendo as variáveis do arquivo…');
+  };
+
+  // Busca a proposta. silencioso = durante a espera automática
+  async function buscarProposta(silencioso) {
+    const id = $('pedido').value.trim();
+    if (!$('url1').value.trim()) { status('Falta o endereço do fluxo de personalização.'); return true; }
+    if (!id) { status('Falta o código do pedido. Ele aparece aqui depois do envio e também está na ficha.'); return true; }
+    try {
+      const resposta = await fetch(urlDe('tokens-plano') + '?id=' + encodeURIComponent(id));
+      if (!resposta.ok) { status('O n8n respondeu ' + resposta.status + '. Confira se o workflow "Tokens – entregar plano" está publicado.'); return true; }
+      const dados = await resposta.json();
+      if (!dados.ok) { if (!silencioso) status(dados.motivo || 'A proposta ainda não está pronta.'); return false; }
+      planoAtual = dados.plano;
+      planoAtual._decidido = dados.decidido || '';
+      status('Desenhando a prévia…');
+      enviarAoPlugin({ tipo: 'previa', plano: planoAtual });
+      return true;
+    } catch (e) {
+      status('Não consegui buscar a proposta: ' + e.message + '\nConfira se o workflow "Tokens – entregar plano" está publicado e se o nó Responder tem o cabeçalho Access-Control-Allow-Origin.');
+      return true;
+    }
+  }
+  $('verProposta').onclick = () => { clearInterval(espera); status('Buscando a proposta…'); buscarProposta(false); };
+
+  function esperarProposta() {
+    let tentativas = 0;
+    clearInterval(espera);
+    status('Enviado. A IA está preparando a proposta; a prévia abre sozinha em cerca de 1 minuto.');
+    espera = setInterval(async () => {
+      tentativas++;
+      const terminou = await buscarProposta(true);
+      if (terminou) return clearInterval(espera);
+      if (tentativas >= 14) { clearInterval(espera); status('A proposta demorou. Veja a aba Executions do fluxo 1 e depois clique em Ver proposta.'); }
+      else status('Preparando a proposta… (' + tentativas + ')');
+    }, 15000);
+  }
+
+  // ---------- Select no estilo do design ----------
+  // O <select> nativo continua guardando o valor (o resto do código lê .value); por cima, um botão e uma lista acessíveis.
+  const ICONE_ABRIR = '<svg class="abrir" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.12021 9.28859L12.0002 13.1686L15.8802 9.28859C16.2702 8.89859 16.9002 8.89859 17.2902 9.28859C17.6802 9.67859 17.6802 10.3086 17.2902 10.6986L12.7002 15.2886C12.3102 15.6786 11.6802 15.6786 11.2902 15.2886L6.70021 10.6986C6.31021 10.3086 6.31021 9.67859 6.70021 9.28859C7.09021 8.90859 7.73021 8.89859 8.12021 9.28859Z" fill="black"/></svg>';
+  const ICONE_RECOLHER = '<svg class="recolher" viewBox="0 0 24 24" aria-hidden="true"><path d="M8.12021 14.7105L12.0002 10.8305L15.8802 14.7105C16.2702 15.1005 16.9002 15.1005 17.2902 14.7105C17.6802 14.3205 17.6802 13.6905 17.2902 13.3005L12.7002 8.71047C12.3102 8.32047 11.6802 8.32047 11.2902 8.71047L6.70021 13.3005C6.31021 13.6905 6.31021 14.3205 6.70021 14.7105C7.09021 15.0905 7.73021 15.1005 8.12021 14.7105Z" fill="black"/></svg>';
+  function fecharSelects(exceto) { document.querySelectorAll('.select.aberto').forEach(s => { if (s !== exceto) { s.classList.remove('aberto'); s.querySelector('.select-botao').setAttribute('aria-expanded', 'false'); } }); }
+  function montarSelect(sel) {
+    let caixa = sel.parentElement.classList.contains('select') ? sel.parentElement : null;
+    if (!caixa) {
+      caixa = document.createElement('div');
+      caixa.className = 'select';
+      sel.parentNode.insertBefore(caixa, sel);
+      caixa.appendChild(sel);
+      sel.tabIndex = -1;
+      sel.setAttribute('aria-hidden', 'true');
+      const rotulo = document.querySelector(`label[for="${sel.id}"]`);
+      const botao = document.createElement('button');
+      botao.type = 'button';
+      botao.className = 'select-botao';
+      botao.id = sel.id + '-botao';
+      botao.setAttribute('aria-haspopup', 'listbox');
+      botao.setAttribute('aria-expanded', 'false');
+      if (rotulo) { rotulo.htmlFor = botao.id; botao.setAttribute('aria-labelledby', (rotulo.id = rotulo.id || sel.id + '-rotulo') + ' ' + botao.id); }
+      const lista = document.createElement('ul');
+      lista.className = 'select-lista';
+      lista.setAttribute('role', 'listbox');
+      lista.id = sel.id + '-lista';
+      botao.setAttribute('aria-controls', lista.id);
+      caixa.append(botao, lista);
+      let foco = 0;
+      const itens = () => [...lista.children];
+      const marcarFoco = i => { foco = Math.max(0, Math.min(i, itens().length - 1)); itens().forEach((li, j) => li.classList.toggle('foco', j === foco)); itens()[foco]?.scrollIntoView({ block: 'nearest' }); };
+      const abrir = () => { fecharSelects(caixa); caixa.classList.add('aberto'); botao.setAttribute('aria-expanded', 'true'); marcarFoco(sel.selectedIndex); };
+      const fechar = () => { caixa.classList.remove('aberto'); botao.setAttribute('aria-expanded', 'false'); };
+      const escolher = i => { sel.selectedIndex = i; sel.dispatchEvent(new Event('change')); atualizar(); fechar(); botao.focus(); };
+      botao.onclick = () => (caixa.classList.contains('aberto') ? fechar() : abrir());
+      botao.onkeydown = e => {
+        const aberto = caixa.classList.contains('aberto');
+        if (e.key === 'ArrowDown') { e.preventDefault(); aberto ? marcarFoco(foco + 1) : abrir(); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); aberto ? marcarFoco(foco - 1) : abrir(); }
+        else if ((e.key === 'Enter' || e.key === ' ') && aberto) { e.preventDefault(); escolher(foco); }
+        else if (e.key === 'Escape' && aberto) { e.preventDefault(); fechar(); }
+        else if (e.key === 'Tab' && aberto) fechar();
+      };
+      lista.onclick = e => { const li = e.target.closest('li'); if (li) escolher(itens().indexOf(li)); };
+      caixa.atualizar = atualizar;
+      function atualizar() {
+        lista.innerHTML = [...sel.options].map((o, i) => `<li role="option" id="${sel.id}-op${i}" aria-selected="${i === sel.selectedIndex}">${esc(o.text)}</li>`).join('');
+        const atual = sel.options[sel.selectedIndex];
+        botao.innerHTML = `<span>${esc(atual ? atual.text : 'Nenhuma opção')}</span>${ICONE_ABRIR}${ICONE_RECOLHER}`;
+        botao.disabled = !sel.options.length;
+      }
+    }
+    caixa.atualizar();
+  }
+  document.addEventListener('click', e => { if (!e.target.closest('.select')) fecharSelects(null); });
+  document.querySelectorAll('select').forEach(montarSelect);
+
+  // ---------- Prévia ----------
+  const sw = c => `<span class="sw" style="background:${esc(c)}" title="${esc(c)}"></span>`;
+  const par = (a, d) => `<span class="par">${sw(a)}<span class="seta">▶</span>${sw(d)}</span>`;
+  function amostra(c) {
+    const ok = c.depois >= c.min;
+    return `<div class="amostra" style="background:${esc(c.corFundo)};color:${esc(c.corFrente)}">
+      <div class="aa">Aa Texto</div><div class="info">${esc(c.frente.replace(/^(text|icon|border)\//, ''))} · ${c.modo}</div>
+      <span class="selo ${ok ? '' : 'ruim'}">${ok ? '✓' : '✗'} ${String(c.depois).replace('.', ',')}:1 (antes ${String(c.antes).replace('.', ',')})</span></div>`;
+  }
+  function medida(m) {
+    const t = m.token, a = Number(m.antes), d = Number(m.depois);
+    let desenho;
+    if (t.startsWith('space/')) desenho = `<div class="linhas"><div class="barra antes" style="width:${Math.min(a, 128) * 1.6}px"></div><div class="barra depois" style="width:${Math.min(d, 128) * 1.6}px"></div></div>`;
+    else if (t.startsWith('radius/')) desenho = `<div><span class="canto" style="border-color:#c9c9c9;border-radius:${Math.min(a, 17)}px"></span><span class="canto" style="border-color:#9246d7;border-radius:${Math.min(d, 17)}px"></span></div>`;
+    else if (t.startsWith('border-width/')) desenho = `<div class="linhas"><div style="height:${a}px;background:#c9c9c9;width:120px"></div><div style="height:${d}px;background:#9246d7;width:120px"></div></div>`;
+    else if (/font-size$/.test(t)) desenho = `<div><span style="font-size:${Math.min(a, 40)}px;color:#8a8a8a">Aa</span> <span style="font-size:${Math.min(d, 40)}px;color:#9246d7">Aa</span></div>`;
+    else if (/font-weight$/.test(t)) desenho = `<div><span style="font-weight:${a};color:#8a8a8a">Título</span> → <span style="font-weight:${d};color:#9246d7">Título</span></div>`;
+    else desenho = '';
+    return `<div class="medida"><div>${esc(t)}<div class="legenda">${num(a)} → ${num(d)}${/font-weight$/.test(t) ? '' : ' px'}</div></div>${desenho}</div>`;
+  }
+  // Cartão de exemplo desenhado com os tokens (a fonte só aparece se estiver instalada)
+  function cartao(t, rotulo) {
+    t = t || {};
+    const v = (n, padrao) => (t[n] === undefined || t[n] === null ? padrao : t[n]);
+    const px = (n, padrao) => `${Number(v(n, padrao))}px`;
+    const familia = (n, base) => `'${esc(v(n, t[base] || 'Inter'))}', '${esc(t[base] || 'Inter')}', system-ui, sans-serif`;
+    const titulo = familia('typography/heading/font-family', 'font-family/primary');
+    const corpo = familia('typography/body/font-family', 'font-family/secondary');
+    const label = familia('typography/label/font-family', 'font-family/secondary');
+    const borda = `${px('border-width/default', 1)} solid ${v('border/subtle', '#e5e5e5')}`;
+    return `<div class="palco" style="background:${v('background/canvas', '#fff')};color:${v('text/primary', '#111')}">
+      <div class="rot">${rotulo}</div>
+      <div class="cartao" style="background:${v('background/surface', '#fafafa')};border:${borda};border-radius:${px('radius/medium', 16)};padding:${px('space/medium', 16)}">
+        <span style="display:inline-block;background:${v('background/accent-1/subtle', '#eef')};color:${v('text/primary', '#111')};border-radius:${px('radius/xx-small', 4)};padding:2px ${px('space/x-small', 8)};font-family:${label};font-size:${px('typography/label/small/font-size', 12)};font-weight:${v('typography/label/medium/font-weight', 500)}">Destaque</span>
+        <div style="margin-top:${px('space/small', 12)};color:${v('text/primary', '#111')};font-family:${titulo};font-size:${px('typography/heading/small/font-size', 20)};line-height:${px('typography/heading/small/line-height', 28)};font-weight:${v('typography/heading/small/font-weight', 700)}">Título do card</div>
+        <div style="margin-top:${px('space/x-small', 8)};color:${v('text/secondary', '#555')};font-family:${corpo};font-size:${px('typography/body/medium/font-size', 16)};line-height:${px('typography/body/medium/line-height', 24)};font-weight:${v('typography/body/medium/font-weight', 400)}">Texto de apoio do card, com uma ou duas linhas de conteúdo.</div>
+        <div style="margin-top:${px('space/small', 12)};color:${v('text/link', '#2a5bd7')};font-family:${corpo};font-size:${px('typography/body/medium/font-size', 16)}">Saiba mais</div>
+        <div style="margin-top:${px('space/small', 12)};display:flex;gap:${px('space/small', 12)};align-items:center;font-family:${label};font-size:${px('typography/label/medium/font-size', 14)};font-weight:${v('typography/label/medium/font-weight', 500)}">
+          <span style="background:${v('background/action/primary', '#2a5bd7')};color:${v('text/on-action-primary', '#fff')};border-radius:${px('radius/x-small', 8)};padding:${px('space/small', 12)} ${px('space/medium', 16)}">Abrir</span>
+          <span style="color:${v('text/primary', '#111')};padding:${px('space/small', 12)} ${px('space/x-small', 8)}">Depois</span>
+        </div>
+      </div></div>`;
+  }
+
+  function desenharPrevia(pv) {
+    $('pvTitulo').textContent = 'Proposta para ' + (pv.projeto || 'o projeto');
+    const saem = Object.values(pv.grupos).reduce((s, n) => s + n, 0);
+    const falhas = pv.contrastes.filter(c => c.depois < c.min);
+    $('pvChips').innerHTML = [pl(pv.cores.length, 'cor muda', 'cores mudam'), pl(pv.medidas.length, 'medida', 'medidas'), pl(pv.fontes.length, 'fonte', 'fontes'), pl(saem, 'variável sai', 'variáveis saem'), pl(falhas.length, 'par abaixo do contraste', 'pares abaixo do contraste')].map((c, i) => `<span class="chip${i === 4 && falhas.length ? ' alerta' : ''}">${c}</span>`).join('');
+    $('pvErros').innerHTML = pv.erros.length ? `<div class="erro">Esta proposta não pode ser aplicada:\n${pv.erros.map(esc).join('\n')}</div>` : '';
+    if (planoAtual && planoAtual._decidido && planoAtual._decidido !== 'pendente') $('pvErros').innerHTML += `<div class="aviso">Esta proposta já foi marcada como "${esc(planoAtual._decidido)}".</div>`;
+    $('aplicar').disabled = pv.erros.length > 0;
+
+    const chaves = ['text/on-action-primary|background/action/primary', 'text/primary|background/canvas', 'text/primary|background/surface', 'text/link|background/canvas'];
+    const destaque = pv.contrastes.filter(c => chaves.includes(c.frente + '|' + c.fundo));
+    const amostras = [...falhas, ...destaque.filter(c => !falhas.includes(c))].slice(0, 8);
+    let h = '';
+    h += `<div class="secao"><h3>Contraste depois da troca</h3><p class="nota">${pv.contrastes.length - falhas.length} de ${pv.contrastes.length} pares passam (texto 4,5:1; ícone e limite de controle 3:1), medidos pelo Par de cada token.</p>`;
+    if (amostras.length) h += `<div class="amostras">${amostras.map(amostra).join('')}</div>`;
+    h += `</div>`;
+    h += `<div class="secao"><h3>Como fica num componente</h3><p class="nota">Um cartão de exemplo montado só com os tokens do arquivo: hoje e na proposta.</p>
+      <div class="modos" role="group" aria-label="Modo"><button id="mClaro" class="ativa" aria-pressed="true">Claro</button><button id="mEscuro" aria-pressed="false">Escuro</button></div><div id="pvComponente"></div></div>`;
+    if (pv.cores.length) {
+      h += `<div class="secao"><h3>Cores que mudam</h3><p class="nota legenda">antes ▶ depois, nos modos claro e escuro</p>`;
+      h += pv.cores.slice(0, 40).map(c => `<div class="cor"><span>${esc(c.token)}</span><span><span class="modo">claro</span>${par(c.claro[0], c.claro[1])}</span><span><span class="modo">escuro</span>${par(c.escuro[0], c.escuro[1])}</span></div>`).join('');
+      if (pv.cores.length > 40) h += `<p class="nota">e mais ${pv.cores.length - 40}.</p>`;
+      h += `</div>`;
+    }
+    if (pv.medidas.length) h += `<div class="secao"><h3>Medidas</h3><p class="legenda">cinza = hoje · roxo = proposta</p><div>` + pv.medidas.map(medida).join('') + `</div></div>`;
+    if (pv.fontes.length) h += `<div class="secao"><h3>Fontes</h3><div>` + pv.fontes.map(f => `<div class="medida"><div>${esc(f.token)}</div><div><div style="font-family:'${esc(f.antes)}';color:#8a8a8a">${esc(f.antes)}: Título de exemplo</div><div style="font-family:'${esc(f.depois)}';font-size:14px">${esc(f.depois)}: Título de exemplo</div></div></div>`).join('') + `</div><p class="nota">A fonte só aparece desenhada se estiver instalada no seu computador.</p></div>`;
+    if (saem) h += `<div class="secao"><h3>Saem do arquivo</h3><ul>${Object.entries(pv.grupos).map(([g, n]) => `<li>${esc(g)}: ${pl(n, 'variável', 'variáveis')}</li>`).join('')}</ul><p class="nota">Grupos opcionais que o projeto não usa (seção 06).</p></div>`;
+    if (pv.pendencias.length) h += `<div class="secao"><h3>Fica para você</h3><ul>${pv.pendencias.map(p => `<li>${esc(p)}</li>`).join('')}</ul></div>`;
+    $('pvConteudo').innerHTML = h;
+    const trocarModo = modo => {
+      $('mClaro').classList.toggle('ativa', modo === 'claro');
+      $('mEscuro').classList.toggle('ativa', modo === 'escuro');
+      $('mClaro').setAttribute('aria-pressed', String(modo === 'claro'));
+      $('mEscuro').setAttribute('aria-pressed', String(modo === 'escuro'));
+      $('pvComponente').innerHTML = `<div class="lado">${cartao(pv.componente['antes-' + modo], 'Hoje')}${cartao(pv.componente['depois-' + modo], 'Proposta')}</div>`;
+    };
+    $('mClaro').onclick = () => trocarModo('claro');
+    $('mEscuro').onclick = () => trocarModo('escuro');
+    trocarModo('claro');
+    previaAberta = Date.now();
+    mostrar(3);
+    status('');
+  }
+
+  function registrarDecisao(decisao, falhas) {
+    const minutos = Math.max(0, Math.round((Date.now() - previaAberta) / 60000));
+    fetch(urlDe('tokens-decisao'), { method: 'POST', mode: 'no-cors', body: JSON.stringify({ pedidoId: $('pedido').value.trim(), decisao, minutos, falhas: falhas || 0 }) }).catch(() => {});
+  }
+  $('aplicar').onclick = () => { $('aplicar').disabled = true; status('Aplicando…'); enviarAoPlugin({ tipo: 'aplicar', plano: planoAtual }); };
+  $('recusar').onclick = () => { registrarDecisao('recusado'); mostrar(1); status('Proposta recusada. Nada mudou no arquivo. Ajuste as respostas e envie de novo.'); };
+
+  onmessage = async ev => {
+    const msg = ev.data.pluginMessage;
+    if (!msg) return;
+    if (msg.tipo === 'inicio') {
+      $('arquivo').textContent = 'Arquivo: ' + msg.arquivo;
+      $('projeto').value = msg.arquivo;
+      $('url1').value = msg.urls.personalizar || '';
+      $('url2').value = msg.urls.validar || '';
+      $('quem').value = msg.urls.quem || '';
+      $('email').value = msg.urls.email || '';
+      $('variavel').innerHTML = msg.especificos.map(n => `<option>${esc(n)}</option>`).join('');
+      montarSelect($('variavel'));
+      $('pedido').value = msg.pedido || '';
+    }
+    if (msg.tipo === 'erro') { $('aplicar').disabled = false; status('Erro: ' + msg.mensagem); }
+    if (msg.tipo === 'previa') desenharPrevia(msg.previa);
+    if (msg.tipo === 'relatorio') {
+      if (msg.relatorio.aplicado) { registrarDecisao('aplicado', msg.relatorio.falhas); mostrar(1); }
+      else $('aplicar').disabled = false;
+      status(msg.relatorio.linhas.join('\n'));
+    }
+    if (msg.tipo === 'pacote') {
+      const url = msg.pacote.acao === 'personalizar' ? $('url1').value.trim() : $('url2').value.trim();
+      status('Enviando ' + Object.keys(msg.pacote.base).length + ' variáveis da Base e ' + Object.keys(msg.pacote.semantic.light).length + ' da Semântica…');
+      try {
+        // no-cors: o n8n recebe o pedido, mas o plugin não consegue ler a resposta deste envio
+        await fetch(url, { method: 'POST', mode: 'no-cors', body: JSON.stringify(msg.pacote) });
+        if (msg.pacote.acao === 'personalizar') {
+          $('pedido').value = msg.pacote.pedidoId;
+          enviarAoPlugin({ tipo: 'salvarPedido', id: msg.pacote.pedidoId });
+          esperarProposta();
+        } else {
+          status('Enviado. O e-mail para a lead de design sai em alguns minutos. Se não sair, veja a aba Executions do n8n.');
+        }
+      } catch (e) {
+        status('Não consegui enviar: ' + e.message + '\nConfira o endereço e se o workflow está publicado.');
+      }
+    }
+  };
+
+  enviarAoPlugin({ tipo: 'pronto' });
+</script>
